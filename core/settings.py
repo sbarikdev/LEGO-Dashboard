@@ -25,8 +25,8 @@ DEBUG = env('DEBUG')
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
 
 # load production server from .env
-ALLOWED_HOSTS        = ['https://feulegoapp.azurewebsites.net/', 'https://feulegoapp.azurewebsites.net']
-CSRF_TRUSTED_ORIGINS = ['https://feulegoapp.azurewebsites.net/', 'https://feulegoapp.azurewebsites.net']
+ALLOWED_HOSTS        = ['*']
+CSRF_TRUSTED_ORIGINS = ['*']
 
 # Application definition
 
