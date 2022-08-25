@@ -2,7 +2,7 @@
 ## Backend
 Follow the steps to run this project:
 
-1. git clone https://github.com/codeinpython-org/codeinpython-main.git
+1. git clone https://github.com/sbarikdev/LEGO-Dashboard.git
 
 2. cd main-backend
 
