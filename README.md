@@ -2,9 +2,9 @@
 ## Backend
 Follow the steps to run this project:
 
-1. git clone https://github.com/sbarikdev/LEGO-Dashboard.git
+1. git clone https://github.com/sbarikdev/LEGO-Web.git
 
-2. cd LEGO-Dashboard
+2. cd LEGO-Web
 
 3. python -m venv
 
