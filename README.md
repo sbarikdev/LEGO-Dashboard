@@ -6,7 +6,7 @@ Follow the steps to run this project:
 
 2. cd LEGO-Web
 
-3. python -m venv
+3. python -m venv venv
 
 4. source venv/bin/activate (for linux/macOS user)
    
