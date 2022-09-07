@@ -57,52 +57,31 @@
                
                 <table id="example1" class="table table-bordered table-striped">
                   
-                  <thead> 
-                  <tr>
-                    {% for i in data %}
-                    <th>{{i}}</th>
-                    {% endfor %}
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>  
-                    {% for k in data1.GLICode %}
-                    <td>{{k}}</td>
-                    {% endfor %} 
-                  </tr>
-                  <tr>  
-                    {% for c in data1.Country %}
-                    <td>{{c}}</td>
-                    {% endfor %} 
-                  </tr>
-                  <tr>  
-                    {% for u in data1.UOM %}
-                    <td>{{u}}</td>
-                    {% endfor %} 
-                  </tr>
-                  <tr>  
-                    {% for inco in data1.Incoterm %}
-                    <td>{{inco}}</td>
-                    {% endfor %} 
-                  </tr>
-                  <tr>  
-                    {% for eu in data1.EU001 %}
-                    <td>{{eu}}</td>
-                    {% endfor %} 
-                  </tr>
-                  <tr>  
-                    {% for ds in data1.DS %}
-                    <td>{{ds}}</td>
-                    {% endfor %} 
-                  </tr>
-                    
-                    
-                  
-                 
-                  
-                  
-                  
-                  </tbody>
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>GLI Code</th>
+                        <th>Country</th>
+                        <th>Incoterm</th>
+                        <th>EU001OC</th>
+                        <th>DSOC</th>
+                        <th>UOMMacro</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                        <tr>
+                          <th>{{i.index}}</th>
+                          <th>{{i.GLICode}}</th>
+                          <th>{{i.Country}}</th>
+                          <th>{{i.Incoterm}}</th>
+                          <th>{{i.EU001OC}}</th>
+                          <th>{{i.DSOC}}</th>
+                          <th>{{i.UOMMacro}}</th>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+               
                   
                 </table>
                

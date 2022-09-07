@@ -50,23 +50,20 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
 
-
+import json
 def tables_data(request):
     dbfs_source_file_path = 'dbfs:/mnt/adls/MPF/Alternate_Currency_Keys_Aug.csv'
     local_file_download_path = './mpf_dataset.csv'
     dbfs_api  = DbfsApi(api_client)
     dbfs_path = DbfsPath(dbfs_source_file_path)
     dbfs_api.get_file(dbfs_path, local_file_download_path, overwrite = True)
-    data = pd.read_csv(local_file_download_path).head(5)
+    data = pd.read_csv(local_file_download_path).head(50)
+    data.rename(columns={'GLI Code': 'GLICode', 'UOM Macro': 'UOMMacro', 'EU001 OC':'EU001OC', 'DS OC':'DSOC'}, inplace=True)
+    # data = data.to_html()
+    # parsing the DataFrame in json format.
+    json_records = data.reset_index().to_json(orient ='records')
+    data = []
+    data = json.loads(json_records)
+    context = {'data': data}
 
-    context = {
-    "data":data,
-    "data1":{
-    'GLICode': data['GLI Code'],
-    'Country': data['Country'],
-    'Incoterm': data['Incoterm'],
-    'EU001': data['EU001 OC'],
-    'DS': data['DS OC'],
-    'UOM': data['UOM Macro'],}
-    }
     return render(request, "home/tables-data.html", context)
