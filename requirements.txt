@@ -17,3 +17,6 @@ azure-datalake-store
 azure-mgmt-resource 
 azure-mgmt-datalake-store 
 azure-identity
+pandas
+numpy
+matplotlib
