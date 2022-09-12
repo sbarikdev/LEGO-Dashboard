@@ -71,4 +71,3 @@ def tables_data(request):
     context = {'data': data}
     return render(request, "home/tables-data.html", context)
 
-
