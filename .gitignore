@@ -15,10 +15,10 @@ __pycache__/
 env
 venv
 # Environments
-#core/.env
-#core/env
-#..venv
-#.env
+core/.env
+core/env
+..venv
+.env
 
 # other
 .DS_Store
