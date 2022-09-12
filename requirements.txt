@@ -10,3 +10,10 @@ toml==0.10.2
 whitenoise==5.3.0
 django-environ==0.8.1
 python-dotenv==0.20.0
+
+databricks-cli 
+azure-storage-blob 
+azure-datalake-store 
+azure-mgmt-resource 
+azure-mgmt-datalake-store 
+azure-identity
