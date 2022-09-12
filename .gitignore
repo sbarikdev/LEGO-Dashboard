@@ -17,6 +17,10 @@ venv
 # Environments
 core/.env
 core/env
+..core/.env
+.core/.env
+..core/env
+.core/env
 apps/core/.env
 /apps/core/.env
 ..venv
