@@ -20,3 +20,4 @@ azure-identity
 pandas
 numpy
 matplotlib
+pyarrow
