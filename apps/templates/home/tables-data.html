@@ -60,24 +60,24 @@
                     <thead>
                       <tr>
                         <th></th>
-                        <th>GLI Code</th>
-                        <th>Country</th>
-                        <th>Incoterm</th>
-                        <th>EU001OC</th>
-                        <th>DSOC</th>
-                        <th>UOMMacro</th>
+                        <th>MaterialCode</th>
+                        <th>Key</th>
+                        <th>Year_Week</th>
+                        <th>SalesCSVolume</th>
+                        <th>DP_Category</th>
+                        <th>MT_Promo_Flag</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for i in data %}
                         <tr>
                           <th>{{i.index}}</th>
-                          <th>{{i.GLICode}}</th>
-                          <th>{{i.Country}}</th>
-                          <th>{{i.Incoterm}}</th>
-                          <th>{{i.EU001OC}}</th>
-                          <th>{{i.DSOC}}</th>
-                          <th>{{i.UOMMacro}}</th>
+                          <th>{{i.MaterialCode}}</th>
+                          <th>{{i.Key}}</th>
+                          <th>{{i.Year_Week}}</th>
+                          <th>{{i.SalesCSVolume}}</th>
+                          <th>{{i.DP_Category}}</th>
+                          <th>{{i.MT_Promo_Flag}}</th>
                         </tr>
                       {% endfor %}
                     </tbody>

@@ -12,8 +12,8 @@ from databricks_cli.dbfs.api import DbfsApi
 from databricks_cli.dbfs.dbfs_path import DbfsPath
 import pandas as pd
 
-DATABRICKS_HOST = "https://adb-3287475818480689.9.azuredatabricks.net/"
-DATABRICKS_TOKEN = "dapi9c2d29eb74a2bd3f0955ead5b039a690"
+from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
+
 api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 
 
@@ -52,18 +52,23 @@ def pages(request):
 
 import json
 def tables_data(request):
-    dbfs_source_file_path = 'dbfs:/mnt/adls/MPF/Alternate_Currency_Keys_Aug.csv'
-    local_file_download_path = './mpf_dataset.csv'
-    dbfs_api  = DbfsApi(api_client)
-    dbfs_path = DbfsPath(dbfs_source_file_path)
-    dbfs_api.get_file(dbfs_path, local_file_download_path, overwrite = True)
-    data = pd.read_csv(local_file_download_path).head(50)
-    data.rename(columns={'GLI Code': 'GLICode', 'UOM Macro': 'UOMMacro', 'EU001 OC':'EU001OC', 'DS OC':'DSOC'}, inplace=True)
+    # dbfs_source_file_path = 'dbfs:/mnt/adls/MPF/Alternate_Currency_Keys_Aug.csv'
+    local_file_download_path = 'apps/home/data/data1.parquet'
+    # dbfs_api  = DbfsApi(api_client)
+    # dbfs_path = DbfsPath(dbfs_source_file_path)
+    # dbfs_api.get_file(dbfs_path, local_file_download_path, overwrite = True)
+    data = pd.read_parquet(local_file_download_path, engine='pyarrow').head(100)
+    #data.rename(columns={'GLI Code': 'GLICode', 'UOM Macro': 'UOMMacro', 'EU001 OC':'EU001OC', 'DS OC':'DSOC'}, inplace=True)
+    # data.head(10)
+    # data = pd.read_csv(local_file_download_path).head(50)
+    #data.rename(columns={'GLI Code': 'GLICode', 'UOM Macro': 'UOMMacro', 'EU001 OC':'EU001OC', 'DS OC':'DSOC'}, inplace=True)
     # data = data.to_html()
     # parsing the DataFrame in json format.
+    # print(data.head(10))
     json_records = data.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
     context = {'data': data}
-
     return render(request, "home/tables-data.html", context)
+
+

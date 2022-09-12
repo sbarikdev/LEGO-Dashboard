@@ -1,5 +1,8 @@
 # -*- encoding: utf-8 -*-
 
+from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
 import os, environ
 
@@ -141,6 +144,8 @@ STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
 
+DATABRICKS_HOST = os.getenv('DATABRICKS_HOST')
+DATABRICKS_TOKEN = os.getenv('DATABRICKS_TOKEN')
 
 #############################################################
 #############################################################
