@@ -68,5 +68,5 @@ def tables_data(request):
     df = pd.DataFrame(data)
     df.set_index('index', inplace=True)
     sns.barplot(data=df, x='Year_Week', y='SalesCSVolume')
-    plt.savefig('/home/satyajit/Desktop/opensource/lego-web/lego-admin/apps/static/assets/pic.png')
+    plt.savefig('apps/static/assets/pic.png')
     return render(request, "home/tables-data.html", context)
