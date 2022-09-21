@@ -22,3 +22,14 @@ numpy
 matplotlib
 pyarrow
 seaborn
+
+joblib
+pathlib
+bokeh
+holoviews
+hvplot
+ennemi
+statsmodels
+markupsafe==2.0.1
+dask[dataframe]
+fmldk

@@ -70,3 +70,41 @@ def tables_data(request):
     sns.barplot(data=df, x='Year_Week', y='SalesCSVolume')
     plt.savefig('apps/static/assets/pic.png')
     return render(request, "home/tables-data.html", context)
+
+
+# import pandas as pd
+# pd.set_option("display.max_columns", 200)
+# import eda
+# try:
+#     import dask.dataframe as dd
+# except Exception as e:
+#     print(e)
+
+def eda_flow(request):
+    data = pd.read_csv("apps/home/data/us_amz.csv", low_memory=False)
+    data = data.head(50)
+    # print(data)
+    json_records = data.reset_index().to_json(orient ='records')
+    data = []
+    data = json.loads(json_records)
+    context = {'data': data}
+    # df = df[(df['G_WEEK']<=202213) & (df['TrainGroup']=='HAIR')]
+    # print('shape---->',df.shape)
+    # df = df.groupby('cpf').filter(lambda x: len(x)>10)
+    # print('new shape---->',df.shape)
+    # amz_columns_dict = {'id_col': 'cpf',
+    #                 'target_col': 'PHY_CS',
+    #                 'time_index_col': 'G_WEEK',
+    #                 'static_num_col_list': [],
+    #                 'static_cat_col_list': ['BrandCode'],
+    #                 'temporal_known_num_col_list':  ['Product_discount'],
+    #                 'temporal_unknown_num_col_list': [],
+    #                 'temporal_known_cat_col_list': ['M'],
+    #                 'temporal_unknown_cat_col_list': [],
+    #                 'strata_col_list': [],
+    #                 'sort_col_list': ['cpf'],
+    #                 'wt_col': None}
+    # eda_object = eda.eda(col_dict=amz_columns_dict)
+    # eda_object.create_report(data=df, filename='/home/satyajit/Desktop/opensource/Session/amz_eda_report2.html') 
+    
+    return render(request, "home/tables-simple.html", context)
