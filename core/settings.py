@@ -147,5 +147,15 @@ STATICFILES_DIRS = (
 DATABRICKS_HOST = os.getenv('DATABRICKS_HOST')
 DATABRICKS_TOKEN = os.getenv('DATABRICKS_TOKEN')
 
+#Celery Settings
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ROUTES = {
+    'common_method.celery_tasks.send_mail_shared': {'queue': 'mail_queue'}
+}
+
 #############################################################
 #############################################################

@@ -72,39 +72,54 @@ def tables_data(request):
     return render(request, "home/tables-data.html", context)
 
 
-# import pandas as pd
+import pandas as pd
 # pd.set_option("display.max_columns", 200)
 # import eda
 # try:
 #     import dask.dataframe as dd
 # except Exception as e:
 #     print(e)
+# from azure.datalake.store import core, lib, multithread
+from core.task import *
+from .forms import EdaDropdownForm
 
 def eda_flow(request):
-    data = pd.read_csv("apps/home/data/us_amz.csv", low_memory=False)
+    path = '/Unilever/satyajit/us_amz.csv'
+    mode = 'rb'
+    # response_dict = {}
+    # df = eda_flow_task.delay(path, mode)
+    # df = pd.set_option("display.max_columns", 50)
+    with adls_client.open(path, mode) as f:
+        data = pd.read_csv(f, low_memory=False)
     data = data.head(50)
-    # print(data)
     json_records = data.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
     context = {'data': data}
-    # df = df[(df['G_WEEK']<=202213) & (df['TrainGroup']=='HAIR')]
-    # print('shape---->',df.shape)
-    # df = df.groupby('cpf').filter(lambda x: len(x)>10)
-    # print('new shape---->',df.shape)
-    # amz_columns_dict = {'id_col': 'cpf',
-    #                 'target_col': 'PHY_CS',
-    #                 'time_index_col': 'G_WEEK',
-    #                 'static_num_col_list': [],
-    #                 'static_cat_col_list': ['BrandCode'],
-    #                 'temporal_known_num_col_list':  ['Product_discount'],
-    #                 'temporal_unknown_num_col_list': [],
-    #                 'temporal_known_cat_col_list': ['M'],
-    #                 'temporal_unknown_cat_col_list': [],
-    #                 'strata_col_list': [],
-    #                 'sort_col_list': ['cpf'],
-    #                 'wt_col': None}
-    # eda_object = eda.eda(col_dict=amz_columns_dict)
-    # eda_object.create_report(data=df, filename='/home/satyajit/Desktop/opensource/Session/amz_eda_report2.html') 
-    
+    if request.method == 'POST':
+        form = EdaDropdownForm(request.POST)
+        if form.is_valid():
+            id_col = form.cleaned_data['id_col']
+            target_col = form.cleaned_data['target_col']
+            data = data[(data['G_WEEK']<=202213) & (data['TrainGroup']=='HAIR')]
+            # print('shape---->',df.shape)
+            data = data.groupby('cpf').filter(lambda x: len(x)>10)
+            # print('new shape---->',df.shape)
+            amz_columns_dict = {'id_col': 'cpf',
+                            'target_col': 'PHY_CS',
+                            'time_index_col': 'G_WEEK',
+                            'static_num_col_list': [],
+                            'static_cat_col_list': ['BrandCode'],
+                            'temporal_known_num_col_list':  ['Product_discount'],
+                            'temporal_unknown_num_col_list': [],
+                            'temporal_known_cat_col_list': ['M'],
+                            'temporal_unknown_cat_col_list': [],
+                            'strata_col_list': [],
+                            'sort_col_list': ['cpf'],
+                            'wt_col': None}
+            # eda_object = eda.eda(col_dict=amz_columns_dict)
+            # eda_object.create_report(data=df, filename='/home/satyajit/Desktop/opensource/Session/amz_eda_report2.html') 
+            return HttpResponse('eda created successfully')
+        else:
+            return HttpResponse('form is not valid')
     return render(request, "home/tables-simple.html", context)
