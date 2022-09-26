@@ -14,6 +14,18 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+import pandas as pd
+# pd.set_option("display.max_columns", 200)
+import eda
+try:
+    import dask.dataframe as dd
+except Exception as e:
+    print(e)
+import os.path
+# from azure.datalake.store import core, lib, multithread
+from core.task import *
+from .forms import EdaDropdownForm
+
 from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
 
 api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
@@ -54,13 +66,11 @@ def pages(request):
 
 import json
 def tables_data(request):
-    # dbfs_source_file_path = 'dbfs:/mnt/adls/MPF/Alternate_Currency_Keys_Aug.csv'
-    local_file_download_path = 'apps/home/data/data1.parquet'
-    # dbfs_api  = DbfsApi(api_client)
-    # dbfs_path = DbfsPath(dbfs_source_file_path)
-    # dbfs_api.get_file(dbfs_path, local_file_download_path, overwrite = True)
-    data = pd.read_parquet(local_file_download_path, engine='pyarrow').head(10)
-    data.head(10)
+    path = '/Unilever/satyajit/data1.parquet'
+    mode = 'rb'
+    with adls_client.open(path, mode) as f:
+        data = pd.read_parquet(f,  engine='pyarrow')
+    data = data.head(50)
     json_records = data.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
@@ -71,22 +81,9 @@ def tables_data(request):
     plt.savefig('apps/static/assets/pic.png')
     return render(request, "home/tables-data.html", context)
 
-
-import pandas as pd
-# pd.set_option("display.max_columns", 200)
-# import eda
-# try:
-#     import dask.dataframe as dd
-# except Exception as e:
-#     print(e)
-# from azure.datalake.store import core, lib, multithread
-from core.task import *
-from .forms import EdaDropdownForm
-
 def eda_flow(request):
     path = '/Unilever/satyajit/us_amz.csv'
     mode = 'rb'
-    # response_dict = {}
     # df = eda_flow_task.delay(path, mode)
     # df = pd.set_option("display.max_columns", 50)
     with adls_client.open(path, mode) as f:
@@ -97,29 +94,30 @@ def eda_flow(request):
     data = json.loads(json_records)
     context = {'data': data}
     if request.method == 'POST':
-        form = EdaDropdownForm(request.POST)
-        if form.is_valid():
-            id_col = form.cleaned_data['id_col']
-            target_col = form.cleaned_data['target_col']
-            data = data[(data['G_WEEK']<=202213) & (data['TrainGroup']=='HAIR')]
-            # print('shape---->',df.shape)
-            data = data.groupby('cpf').filter(lambda x: len(x)>10)
-            # print('new shape---->',df.shape)
-            amz_columns_dict = {'id_col': 'cpf',
-                            'target_col': 'PHY_CS',
-                            'time_index_col': 'G_WEEK',
-                            'static_num_col_list': [],
-                            'static_cat_col_list': ['BrandCode'],
-                            'temporal_known_num_col_list':  ['Product_discount'],
-                            'temporal_unknown_num_col_list': [],
-                            'temporal_known_cat_col_list': ['M'],
-                            'temporal_unknown_cat_col_list': [],
-                            'strata_col_list': [],
-                            'sort_col_list': ['cpf'],
-                            'wt_col': None}
-            # eda_object = eda.eda(col_dict=amz_columns_dict)
-            # eda_object.create_report(data=df, filename='/home/satyajit/Desktop/opensource/Session/amz_eda_report2.html') 
-            return HttpResponse('eda created successfully')
-        else:
-            return HttpResponse('form is not valid')
+        id_col = request.POST.get('id_col')
+        target_col = request.POST.get('target_col')
+        time_index_col = request.POST.get('time_index_col')
+        static_cat_col_list = request.POST.getlist('static_cat_col_list')
+        temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
+        temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
+        sort_col_list = request.POST.getlist('sort_col_list')
+        amz_columns_dict = {'id_col': id_col,
+                        'target_col': target_col,
+                        'time_index_col': time_index_col,
+                        'static_cat_col_list': static_cat_col_list,
+                        'temporal_known_num_col_list':  temporal_known_num_col_list,
+                        'temporal_known_cat_col_list': temporal_known_cat_col_list,
+                        # 'sort_col_list': sort_col_list,
+                        'wt_col': None}
+        print('amz_columns_dict------>', amz_columns_dict)
+        eda_object = eda.eda(col_dict=amz_columns_dict)
+        save_path = '/home/'
+        name_of_file = 'eda_test_local'
+        file_path = os.path.join(save_path, name_of_file+".html")
+        try:
+            # eda_object.create_report(data=data, filename=file_path) 
+            eda_object.create_report(data=data, filename=file_path) 
+        except Exception as e:
+            print('error is------>',e)
+        return HttpResponse('eda created successfully')
     return render(request, "home/tables-simple.html", context)

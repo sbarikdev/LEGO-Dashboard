@@ -40,7 +40,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item active">EDA Flow</li>
             </ol>
           </div>
@@ -50,6 +50,8 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <form method="POST">
+          {% csrf_token%}
         <div class="row">
           <div class="col-12">
 
@@ -99,59 +101,64 @@
             </div>
             <!-- /.card -->
           <label for="peas">id_col:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-              <option>cpf</option>
+          <select class="selectpicker" multiple="false" name="id_col" id="id_col">
+              <option value="cpf">cpf</option>
           </select>
           <label for="peas">target_col:</label>
-          <select class="selectpicker" multiple data-max-options="2">
-              <option>PHY_CS</option>
+          <select class="selectpicker" multiple="false" name="target_col" id="target_col">
+              <option value="PHY_CS">PHY_CS</option>
           </select>
           <label for="peas">time_index_col:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-            <option>G_WEEK</option>
+          <select class="selectpicker" multiple="false" name="time_index_col" id="time_index_col">
+            <option value="G_WEEK">G_WEEK</option>
           </select>
           <label for="peas">static_cat_col_list:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-            <option>BrandCode</option>
-            <option>SubcategoryCode</option>
-            <option>CategoryCode</option>
-            <option>CUSTOMER</option>
+          <select class="selectpicker" multiple="true" name="static_cat_col_list" id="static_cat_col_list">
+            <option value="BrandCode">BrandCode</option>
+            <option value="SubcategoryCode">SubcategoryCode</option>
+            <option value="CategoryCode">CategoryCode</option>
+            <option value="CUSTOMER">CUSTOMER</option>
           </select>
           <label for="peas">temporal_known_num_col_list:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-            <option>Percent_Discount</option>
-            <option>Product_discount</option>
-            <option>Fixed_Discount</option>
-            <option>Holidays</option>
-            <option>Losses</option>
-            <option>stringency_index</option>
+          <select class="selectpicker" multiple="true" name="temporal_known_num_col_list" id="temporal_known_num_col_list">
+            <option value="Percent_Discount">Percent_Discount</option>
+            <option value="Product_discount">Product_discount</option>
+            <option value="Fixed_Discount">Fixed_Discount</option>
+            <option value="Holidays">Holidays</option>
+            <option value="Losses">Losses</option>
+            <option value="stringency_index">stringency_index</option>
           </select>
           <label for="peas">temporal_known_cat_col_list:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-            <option>W</option>
-            <option>M</option>
-            <option>prime_day</option>
-            <option>Black_Friday</option>
-            <option>EASTER</option>
-            <option>NY/Cristmass</option>
+          <select class="selectpicker" multiple="true" name="temporal_known_cat_col_list" id="temporal_known_cat_col_list">
+            <option value="W">W</option>
+            <option value="M">M</option>
+            <option value="prime_day">prime_day</option>
+            <option value="Black_Friday">Black_Friday</option>
+            <option value="EASTER">EASTER</option>
+            <option value="NY/Cristmass">NY/Cristmass</option>
           </select>
           <label for="peas">sort_col_list:</label>
-          <select class="selectpicker" multiple data-live-search="true">
-            <option>cpf</option>
+          <select class="mul-select" multiple="true" name="sort_col_list" id="sort_col_list">
+            <option value="cpf">cpf</option>
+            <option value="G_WEEK">G_WEEK</option>
           </select>
+
           </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
         <br>
         <br>
+        
         <div class="row no-print">
           <div class="col-12">
-            <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+            <!-- <button type="button" value="POST" type="submit" class="btn btn-primary float-right" style="margin-right: 5px;">
               <i class="fas fa-download"></i> Generate EDA
-            </button>
+            </button> -->
+            <input type="submit" value="Generate EDA" style="margin-right: 5px;">
           </div>
         </div>
+      </form>
         <br>
         <br>
       </div>
