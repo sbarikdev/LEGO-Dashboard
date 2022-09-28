@@ -22,6 +22,7 @@ try:
 except Exception as e:
     print(e)
 import os.path
+import IPython
 # from azure.datalake.store import core, lib, multithread
 from core.task import *
 from .forms import EdaDropdownForm
@@ -87,9 +88,9 @@ def eda_flow(request):
     # df = eda_flow_task.delay(path, mode)
     # df = pd.set_option("display.max_columns", 50)
     with adls_client.open(path, mode) as f:
-        data = pd.read_csv(f, low_memory=False)
-    data = data.head(50)
-    json_records = data.reset_index().to_json(orient ='records')
+        df = pd.read_csv(f, low_memory=False)
+    df = df.head(50)
+    json_records = df.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
     context = {'data': data}
@@ -97,6 +98,8 @@ def eda_flow(request):
         id_col = request.POST.get('id_col')
         target_col = request.POST.get('target_col')
         time_index_col = request.POST.get('time_index_col')
+        file_name = request.POST.get('file_name')
+        download_path = request.POST.get('download_path')
         static_cat_col_list = request.POST.getlist('static_cat_col_list')
         temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
         temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
@@ -107,17 +110,17 @@ def eda_flow(request):
                         'static_cat_col_list': static_cat_col_list,
                         'temporal_known_num_col_list':  temporal_known_num_col_list,
                         'temporal_known_cat_col_list': temporal_known_cat_col_list,
-                        # 'sort_col_list': sort_col_list,
-                        'wt_col': None}
+                        'sort_col_list': sort_col_list,
+                        'wt_col': None,
+                        }
         print('amz_columns_dict------>', amz_columns_dict)
         eda_object = eda.eda(col_dict=amz_columns_dict)
-        save_path = '/home/'
-        name_of_file = 'eda_test_local'
-        file_path = os.path.join(save_path, name_of_file+".html")
-        try:
-            # eda_object.create_report(data=data, filename=file_path) 
-            eda_object.create_report(data=data, filename=file_path) 
-        except Exception as e:
-            print('error is------>',e)
+        save_path = download_path
+        if os.path.exists(save_path):
+            name_of_file = file_name
+            file_path = os.path.join(save_path, name_of_file+".html")         
+            eda_object.create_report(data=df, filename=file_path) 
+        else:
+            return HttpResponse('download path is not exist, please provide valid path')
         return HttpResponse('eda created successfully')
     return render(request, "home/tables-simple.html", context)
