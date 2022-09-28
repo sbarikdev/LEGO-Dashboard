@@ -34,3 +34,4 @@ markupsafe==2.0.1
 dask[dataframe]
 fmldk
 celery==4.4.0
+ipython
