@@ -47,21 +47,9 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-    <!-- {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %} -->
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <form method="POST">
-          {% csrf_token%}
         <div class="row">
           <div class="col-12">
 
@@ -110,73 +98,10 @@
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-          <label for="peas">id_col:</label>
-          <select class="selectpicker" multiple="false" name="id_col" id="id_col">
-              <option value="cpf">cpf</option>
-          </select>
-          <label for="peas">target_col:</label>
-          <select class="selectpicker" multiple="false" name="target_col" id="target_col">
-              <option value="PHY_CS">PHY_CS</option>
-          </select>
-          <label for="peas">time_index_col:</label>
-          <select class="selectpicker" multiple="false" name="time_index_col" id="time_index_col">
-            <option value="G_WEEK">G_WEEK</option>
-          </select>
-          <label for="peas">static_cat_col_list:</label>
-          <select class="selectpicker" multiple="true" name="static_cat_col_list" id="static_cat_col_list">
-            <option value="BrandCode">BrandCode</option>
-            <option value="SubcategoryCode">SubcategoryCode</option>
-            <option value="CategoryCode">CategoryCode</option>
-            <option value="CUSTOMER">CUSTOMER</option>
-          </select>
-          <label for="peas">temporal_known_num_col_list:</label>
-          <select class="selectpicker" multiple="true" name="temporal_known_num_col_list" id="temporal_known_num_col_list">
-            <option value="Percent_Discount">Percent_Discount</option>
-            <option value="Product_discount">Product_discount</option>
-            <option value="Fixed_Discount">Fixed_Discount</option>
-            <option value="Holidays">Holidays</option>
-            <option value="Losses">Losses</option>
-            <option value="stringency_index">stringency_index</option>
-          </select>
-          <label for="peas">temporal_known_cat_col_list:</label>
-          <select class="selectpicker" multiple="true" name="temporal_known_cat_col_list" id="temporal_known_cat_col_list">
-            <option value="W">W</option>
-            <option value="M">M</option>
-            <option value="prime_day">prime_day</option>
-            <option value="Black_Friday">Black_Friday</option>
-            <option value="EASTER">EASTER</option>
-            <option value="NY/Cristmass">NY/Cristmass</option>
-          </select>
-          <label for="peas">sort_col_list:</label>
-          <select class="mul-select" multiple="true" name="sort_col_list" id="sort_col_list">
-            <option value="cpf">cpf</option>
-            <option value="G_WEEK">G_WEEK</option>
-          </select>
-          <br><br>
-          <label for="fname">File name:</label>
-          <input type="text" id="file_name" name="file_name">
-          <br><br>
-          <label for="fname">Download path:</label>
-          <input type="text" id="download_path" name="download_path">
-
           </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
-        <br>
-        <br>
-        
-        <div class="row no-print">
-          <div class="col-12">
-            <!-- <button type="button" value="POST" type="submit" class="btn btn-primary float-right" style="margin-right: 5px;">
-              <i class="fas fa-download"></i> Generate EDA
-            </button> -->
-            <input type="submit" value="Generate EDA" style="margin-right: 5px;">
-          </div>
-        </div>
-      </form>
-        <br>
-        <br>
       </div>
       <!-- /.container-fluid -->
     </section>

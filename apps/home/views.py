@@ -24,8 +24,11 @@ except Exception as e:
 import os.path
 import IPython
 # from azure.datalake.store import core, lib, multithread
-from core.task import *
-from .forms import EdaDropdownForm
+from django.conf import settings
+import os,sys
+from core.task import send_email_task
+from django.contrib import messages
+from django.shortcuts import render
 
 from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
 
@@ -67,10 +70,11 @@ def pages(request):
 
 import json
 def tables_data(request):
-    path = '/Unilever/satyajit/data1.parquet'
-    mode = 'rb'
-    with adls_client.open(path, mode) as f:
-        data = pd.read_parquet(f,  engine='pyarrow')
+    # path = '/Unilever/satyajit/data1.parquet'
+    # mode = 'rb'
+    # with adls_client.open(path, mode) as f:
+    #     data = pd.read_parquet(f,  engine='pyarrow')
+    data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet", low_memory=False)
     data = data.head(50)
     json_records = data.reset_index().to_json(orient ='records')
     data = []
@@ -82,13 +86,16 @@ def tables_data(request):
     plt.savefig('apps/static/assets/pic.png')
     return render(request, "home/tables-data.html", context)
 
+
+@login_required(login_url="/login/")
 def eda_flow(request):
-    path = '/Unilever/satyajit/us_amz.csv'
-    mode = 'rb'
+    # path = '/Unilever/satyajit/us_amz.csv'
+    # mode = 'rb'
     # df = eda_flow_task.delay(path, mode)
     # df = pd.set_option("display.max_columns", 50)
-    with adls_client.open(path, mode) as f:
-        df = pd.read_csv(f, low_memory=False)
+    # with adls_client.open(path, mode) as f:
+    #     df = pd.read_csv(f, low_memory=False)
+    df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     df = df.head(50)
     json_records = df.reset_index().to_json(orient ='records')
     data = []
@@ -119,8 +126,20 @@ def eda_flow(request):
         if os.path.exists(save_path):
             name_of_file = file_name
             file_path = os.path.join(save_path, name_of_file+".html")         
-            eda_object.create_report(data=df, filename=file_path) 
+            # eda_object.create_report(data=df, filename=file_path) 
         else:
             return HttpResponse('download path is not exist, please provide valid path')
-        return HttpResponse('eda created successfully')
+        user = request.user
+        if user.email:
+            from_email = settings.FROM_EMAIL
+            recipient_email = user.email
+            subject = 'EDA file generated'
+            message = 'Hey, Your EDA file is generated successfully.'
+            try:
+                status = send_email_task.delay(subject, message, from_email, [recipient_email, ], fail_silently=False)
+            except Exception as e:
+                return HttpResponse('email error')
+        else:
+            recipient_email = None
+        return render(request,'home/index.html', {'message': 'Save Complete'})
     return render(request, "home/tables-simple.html", context)
