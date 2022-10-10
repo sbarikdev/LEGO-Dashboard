@@ -32,8 +32,3 @@ def send_email_task(subject,message,from_email,recipient_email,fail_silently):
 #         return 'data load success'
 #     except Exception as e:
 #         response_dict.update({'error': str(e)})
-
-
-
-
-
