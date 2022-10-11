@@ -21,7 +21,7 @@ try:
     import dask.dataframe as dd
 except Exception as e:
     print(e)
-import os.path
+# import os.path
 import IPython
 from azure.datalake.store import core, lib, multithread
 from django.conf import settings
@@ -125,12 +125,13 @@ def eda_flow(request):
                             }
             eda_object = eda.eda(col_dict=amz_columns_dict)
             save_path = download_path
-            if os.path.exists(save_path):
-                name_of_file = file_name
-                file_path = os.path.join(save_path, name_of_file+".html")         
-                eda_object.create_report(data=df, filename=file_path) 
-            else:
-                return render(request,'home/index.html', {'message': 'download path is not exist'})
+            from pathlib import Path
+            #if os.path.exists(save_path):
+            name_of_file = file_name
+            file_path = Path(save_path, name_of_file+".html")     
+            eda_object.create_report(data=df, filename=file_path) 
+            # else:
+            #     return render(request,'home/index.html', {'message': 'download path is not exist'})
             user = request.user
             if user.email:
                 from_email = settings.FROM_EMAIL
@@ -145,6 +146,7 @@ def eda_flow(request):
             else:
                 recipient_email = None
             return render(request,'home/index.html', {'message': 'Save Complete'})
-    except:
+    except Exception as e:
+        # print('error is---->', e)
         return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)

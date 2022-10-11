@@ -1,10 +1,8 @@
 # -*- encoding: utf-8 -*-
-
+import os, environ
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
-
-import os, environ
 
 env = environ.Env(
     # set casting, default value
