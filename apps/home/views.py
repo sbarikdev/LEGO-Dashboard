@@ -70,11 +70,11 @@ def pages(request):
 
 import json
 def tables_data(request):
-    # path = '/Unilever/satyajit/data1.parquet'
-    # mode = 'rb'
-    # with adls_client.open(path, mode) as f:
-    #     data = pd.read_parquet(f,  engine='pyarrow')
-    data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet", low_memory=False)
+    path = '/Unilever/satyajit/data1.parquet'
+    mode = 'rb'
+    with adls_client.open(path, mode) as f:
+        data = pd.read_parquet(f,  engine='pyarrow')
+    #data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet", low_memory=False)
     data = data.head(50)
     json_records = data.reset_index().to_json(orient ='records')
     data = []
