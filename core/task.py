@@ -3,8 +3,8 @@ from time import sleep
 from azure.datalake.store import core, lib, multithread
 from django.core.mail import send_mail
 import pandas as pd
-# token = lib.auth()
-# adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
+token = lib.auth()
+adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
 
 @shared_task
 def sleepy(duration):
