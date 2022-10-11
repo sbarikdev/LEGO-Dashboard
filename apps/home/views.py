@@ -23,7 +23,7 @@ except Exception as e:
     print(e)
 import os.path
 import IPython
-# from azure.datalake.store import core, lib, multithread
+from azure.datalake.store import core, lib, multithread
 from django.conf import settings
 import os,sys
 from core.task import *
@@ -33,6 +33,9 @@ from django.shortcuts import render
 from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
 
 api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
+import pandas as pd
+token = lib.auth()
+adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
 
 
 @login_required(login_url="/login/")
