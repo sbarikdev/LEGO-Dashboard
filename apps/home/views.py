@@ -99,7 +99,7 @@ def eda_flow(request):
     json_records = df.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
-    context = {'data': data}
+    context = {'data': data, 'message': 'data loaded successfully.'}
     try:
         if request.method == 'POST':
             id_col = request.POST.get('id_col')
