@@ -17,15 +17,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 # pd.set_option("display.max_columns", 200)
 import eda
-try:
-    import dask.dataframe as dd
-except Exception as e:
-    print(e)
+# try:
+#     import dask.dataframe as dd
+# except Exception as e:
+#     print(e)
 # import os.path
-import IPython
+# import IPython
 from azure.datalake.store import core, lib, multithread
 from django.conf import settings
-import os,sys
+# import os,sys
 from core.task import *
 from django.contrib import messages
 from django.shortcuts import render
@@ -77,7 +77,7 @@ def tables_data(request):
     mode = 'rb'
     with adls_client.open(path, mode) as f:
         data = pd.read_parquet(f,  engine='pyarrow')
-    #data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet", low_memory=False)
+    #data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet")
     data = data.head(50)
     json_records = data.reset_index().to_json(orient ='records')
     data = []
@@ -132,21 +132,21 @@ def eda_flow(request):
             eda_object.create_report(data=df, filename=file_path) 
             # else:
             #     return render(request,'home/index.html', {'message': 'download path is not exist'})
-            user = request.user
-            if user.email:
-                from_email = settings.FROM_EMAIL
-                recipient_email = user.email
-                subject = 'EDA file generated'
-                message = 'Your EDA file is generated successfully.'
-                try:
-                    from django.core.mail import send_mail
-                    status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
-                except Exception as e:
-                    return render(request,'home/index.html', {'message': 'email error'})
-            else:
-                recipient_email = None
+            # user = request.user
+            # if user.email:
+            #     from_email = settings.FROM_EMAIL
+            #     recipient_email = user.email
+            #     subject = 'EDA file generated'
+            #     message = 'Your EDA file is generated successfully.'
+            #     try:
+            #         from django.core.mail import send_mail
+            #         status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+            #     except Exception as e:
+            #         return render(request,'home/index.html', {'message': 'email error'})
+            # else:
+            #     recipient_email = None
             return render(request,'home/index.html', {'message': 'Save Complete'})
     except Exception as e:
-        # print('error is---->', e)
+        print('error is---->', e)
         return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)
