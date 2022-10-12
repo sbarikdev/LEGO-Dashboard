@@ -27,8 +27,8 @@ ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 
 # load production server from .env
 ALLOWED_HOSTS        = ['*']
-#CSRF_TRUSTED_ORIGINS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://feulegoapp.azurewebsites.net', 'https://www.feulegoapp.azurewebsites.net']
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
 INSTALLED_APPS = [
