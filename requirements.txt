@@ -16,3 +16,4 @@ dask[dataframe]
 fmldk
 # celery==4.4.0
 ipython
+django-cors-headers
