@@ -8,7 +8,7 @@ urlpatterns = [
 
     # The home page
     path('', views.index, name='home'),
-    path('tables_data', views.tables_data, name='tables_data'),
+    # path('tables_data', views.tables_data, name='tables_data'),
     path('eda_flow', views.eda_flow, name='eda_flow'),
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages')

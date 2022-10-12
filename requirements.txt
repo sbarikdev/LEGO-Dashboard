@@ -1,4 +1,4 @@
-Django==3.2.13
+Django==4.1
 whitenoise==5.3.0
 django-environ==0.8.1
 python-dotenv==0.20.0
@@ -10,12 +10,9 @@ azure-mgmt-resource
 azure-mgmt-datalake-store 
 azure-identity
 pandas
-numpy
-matplotlib
-pyarrow
-seaborn
+# pyarrow
 
 dask[dataframe]
 fmldk
-celery==4.4.0
+# celery==4.4.0
 ipython
