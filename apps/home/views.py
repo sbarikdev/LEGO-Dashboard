@@ -8,25 +8,19 @@ from django.urls import reverse
 from django.shortcuts import render
 
 from databricks_cli.sdk.api_client import ApiClient
-from databricks_cli.dbfs.api import DbfsApi
-from databricks_cli.dbfs.dbfs_path import DbfsPath
+# from databricks_cli.dbfs.api import DbfsApi
+# from databricks_cli.dbfs.dbfs_path import DbfsPath
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-import pandas as pd
+# import seaborn as sns
+# import matplotlib.pyplot as plt
 # pd.set_option("display.max_columns", 200)
 import eda
 # try:
 #     import dask.dataframe as dd
 # except Exception as e:
 #     print(e)
-# import os.path
-# import IPython
 from azure.datalake.store import core, lib, multithread
 from django.conf import settings
-# import os,sys
-from core.task import *
 from django.contrib import messages
 from django.shortcuts import render
 
@@ -72,22 +66,22 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 import json
-def tables_data(request):
-    path = '/Unilever/satyajit/data1.parquet'
-    mode = 'rb'
-    with adls_client.open(path, mode) as f:
-        data = pd.read_parquet(f,  engine='pyarrow')
-    #data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet")
-    data = data.head(50)
-    json_records = data.reset_index().to_json(orient ='records')
-    data = []
-    data = json.loads(json_records)
-    context = {'data': data}
-    df = pd.DataFrame(data)
-    df.set_index('index', inplace=True)
-    sns.barplot(data=df, x='Year_Week', y='SalesCSVolume')
-    plt.savefig('apps/static/assets/pic.png')
-    return render(request, "home/tables-data.html", context)
+# def tables_data(request):
+#     path = '/Unilever/satyajit/data1.parquet'
+#     mode = 'rb'
+#     with adls_client.open(path, mode) as f:
+#         data = pd.read_parquet(f,  engine='pyarrow')
+#     #data = pd.read_parquet("/home/satyajit/Desktop/opensource/data/data1.parquet")
+#     data = data.head(50)
+#     json_records = data.reset_index().to_json(orient ='records')
+#     data = []
+#     data = json.loads(json_records)
+#     context = {'data': data}
+#     df = pd.DataFrame(data)
+#     df.set_index('index', inplace=True)
+#     sns.barplot(data=df, x='Year_Week', y='SalesCSVolume')
+#     plt.savefig('apps/static/assets/pic.png')
+#     return render(request, "home/tables-data.html", context)
 
 
 @login_required(login_url="/login/")
