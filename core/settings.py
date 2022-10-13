@@ -26,7 +26,16 @@ DEBUG = env('DEBUG')
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
 
 # load production server from .env
-ALLOWED_HOSTS        = ['*']
+ALLOWED_HOSTS        = [
+    'https://feulegoapp.azurewebsites.net', 
+    'http://feulegoapp.azurewebsites.net',
+    'feulegoapp.azurewebsites.net',
+    'https://www.feulegoapp.azurewebsites.net',
+    'http://www.feulegoapp.azurewebsites.net',
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "127.0.0.1",
+]
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
@@ -55,7 +64,7 @@ MIDDLEWARE = [
 ]
 CORS_ALLOWED_ORIGINS = [
     'https://feulegoapp.azurewebsites.net', 
-    'http://feulegoapp.azurewebsites.net', 
+    'http://feulegoapp.azurewebsites.net',
     'https://www.feulegoapp.azurewebsites.net',
     'http://www.feulegoapp.azurewebsites.net',
     "http://localhost:8000",
