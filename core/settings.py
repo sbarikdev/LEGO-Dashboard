@@ -26,16 +26,8 @@ DEBUG = env('DEBUG')
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
 
 # load production server from .env
-ALLOWED_HOSTS        = [
-    'https://feulegoapp.azurewebsites.net', 
-    'http://feulegoapp.azurewebsites.net',
-    'feulegoapp.azurewebsites.net',
-    'https://www.feulegoapp.azurewebsites.net',
-    'http://www.feulegoapp.azurewebsites.net',
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS        = ['*']
+CSRF_TRUSTED_ORIGINS = ['*']
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Application definition
 
@@ -47,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.home',  # Enable the inner home (home)
-    "corsheaders"
+    # "corsheaders"
 ]
 
 MIDDLEWARE = [
@@ -62,42 +54,35 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
-CORS_ALLOWED_ORIGINS = [
-    'https://feulegoapp.azurewebsites.net', 
-    'http://feulegoapp.azurewebsites.net',
-    'https://www.feulegoapp.azurewebsites.net',
-    'http://www.feulegoapp.azurewebsites.net',
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-CSRF_TRUSTED_ORIGINS = [
-    'https://feulegoapp.azurewebsites.net', 
-    'http://feulegoapp.azurewebsites.net', 
-    'https://www.feulegoapp.azurewebsites.net',
-    'http://www.feulegoapp.azurewebsites.net',
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://feulegoapp.azurewebsites.net', 
+#     'http://feulegoapp.azurewebsites.net',
+#     'https://www.feulegoapp.azurewebsites.net',
+#     'http://www.feulegoapp.azurewebsites.net',
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+# ]
+
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
@@ -187,8 +172,9 @@ STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
 
-DATABRICKS_HOST = os.getenv('DATABRICKS_HOST')
-DATABRICKS_TOKEN = os.getenv('DATABRICKS_TOKEN')
+# DATABRICKS_HOST = os.getenv('DATABRICKS_HOST')
+# DATABRICKS_TOKEN = os.getenv('DATABRICKS_TOKEN')
+
 
 #Celery Settings
 # CELERY_TIMEZONE = "Asia/Kolkata"

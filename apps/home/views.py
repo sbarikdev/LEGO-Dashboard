@@ -7,7 +7,7 @@ from django.template import loader
 from django.urls import reverse
 from django.shortcuts import render
 
-from databricks_cli.sdk.api_client import ApiClient
+# from databricks_cli.sdk.api_client import ApiClient
 # from databricks_cli.dbfs.api import DbfsApi
 # from databricks_cli.dbfs.dbfs_path import DbfsPath
 import pandas as pd
@@ -24,9 +24,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render
 
-from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
+# from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
 
-api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
+# api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
 token = lib.auth()
 adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
@@ -97,33 +97,33 @@ def eda_flow(request):
     data = []
     data = json.loads(json_records)
     context = {'data': data, 'message': 'data loaded successfully.'}
-    try:
-        if request.method == 'POST':
-            id_col = request.POST.get('id_col')
-            target_col = request.POST.get('target_col')
-            time_index_col = request.POST.get('time_index_col')
-            file_name = request.POST.get('file_name')
-            download_path = request.POST.get('download_path')
-            static_cat_col_list = request.POST.getlist('static_cat_col_list')
-            temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
-            temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
-            sort_col_list = request.POST.getlist('sort_col_list')
-            amz_columns_dict = {'id_col': id_col,
-                            'target_col': target_col,
-                            'time_index_col': time_index_col,
-                            'static_cat_col_list': static_cat_col_list,
-                            'temporal_known_num_col_list':  temporal_known_num_col_list,
-                            'temporal_known_cat_col_list': temporal_known_cat_col_list,
-                            'sort_col_list': sort_col_list,
-                            'wt_col': None,
-                            }
-            eda_object = eda.eda(col_dict=amz_columns_dict)
-            save_path = download_path
-            from pathlib import Path
-            #if os.path.exists(save_path):
-            name_of_file = file_name
-            file_path = Path(save_path, name_of_file+".html")     
-            eda_object.create_report(data=df, filename=file_path) 
+    # try:
+    #     if request.method == 'POST':
+    #         id_col = request.POST.get('id_col')
+    #         target_col = request.POST.get('target_col')
+    #         time_index_col = request.POST.get('time_index_col')
+    #         file_name = request.POST.get('file_name')
+    #         download_path = request.POST.get('download_path')
+    #         static_cat_col_list = request.POST.getlist('static_cat_col_list')
+    #         temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
+    #         temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
+    #         sort_col_list = request.POST.getlist('sort_col_list')
+    #         amz_columns_dict = {'id_col': id_col,
+    #                         'target_col': target_col,
+    #                         'time_index_col': time_index_col,
+    #                         'static_cat_col_list': static_cat_col_list,
+    #                         'temporal_known_num_col_list':  temporal_known_num_col_list,
+    #                         'temporal_known_cat_col_list': temporal_known_cat_col_list,
+    #                         'sort_col_list': sort_col_list,
+    #                         'wt_col': None,
+    #                         }   
+    #         eda_object = eda.eda(col_dict=amz_columns_dict)
+    #         save_path = download_path
+    #         from pathlib import Path
+    #         #if os.path.exists(save_path):
+    #         name_of_file = file_name
+    #         file_path = Path(save_path, name_of_file+".html")     
+    #         eda_object.create_report(data=df, filename=file_path) 
             # else:
             #     return render(request,'home/index.html', {'message': 'download path is not exist'})
             # user = request.user
@@ -139,8 +139,8 @@ def eda_flow(request):
             #         return render(request,'home/index.html', {'message': 'email error'})
             # else:
             #     recipient_email = None
-            return render(request,'home/index.html', {'message': 'Save Complete'})
-    except Exception as e:
-        print('error is---->', e)
-        return render(request,'home/index.html', {'message': 'Error while generating EDA'})
+    #         return render(request,'home/index.html', {'message': 'Save Complete'})
+    # except Exception as e:
+    #     print('error is---->', e)
+    #     return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)
