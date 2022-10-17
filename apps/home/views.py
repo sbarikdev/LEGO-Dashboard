@@ -28,9 +28,6 @@ from django.shortcuts import render
 
 # api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
-token = lib.auth()
-adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
-
 
 @login_required(login_url="/login/")
 def index(request):
@@ -86,6 +83,8 @@ import json
 
 @login_required(login_url="/login/")
 def eda_flow(request):
+    token = lib.auth()
+    adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
     path = '/Unilever/satyajit/us_amz.csv'
     mode = 'rb'
     # df = eda_flow_task.delay(path, mode)
