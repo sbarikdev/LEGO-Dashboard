@@ -25,7 +25,8 @@ from django.contrib import messages
 from django.shortcuts import render
 
 # from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
-
+token = lib.auth()
+adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
 # api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
 
@@ -83,8 +84,6 @@ import json
 
 @login_required(login_url="/login/")
 def eda_flow(request):
-    token = lib.auth()
-    adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
     path = '/Unilever/satyajit/us_amz.csv'
     mode = 'rb'
     # df = eda_flow_task.delay(path, mode)
@@ -96,50 +95,51 @@ def eda_flow(request):
     data = []
     data = json.loads(json_records)
     context = {'data': data, 'message': 'data loaded successfully.'}
-    # try:
-    #     if request.method == 'POST':
-    #         id_col = request.POST.get('id_col')
-    #         target_col = request.POST.get('target_col')
-    #         time_index_col = request.POST.get('time_index_col')
-    #         file_name = request.POST.get('file_name')
-    #         download_path = request.POST.get('download_path')
-    #         static_cat_col_list = request.POST.getlist('static_cat_col_list')
-    #         temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
-    #         temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
-    #         sort_col_list = request.POST.getlist('sort_col_list')
-    #         amz_columns_dict = {'id_col': id_col,
-    #                         'target_col': target_col,
-    #                         'time_index_col': time_index_col,
-    #                         'static_cat_col_list': static_cat_col_list,
-    #                         'temporal_known_num_col_list':  temporal_known_num_col_list,
-    #                         'temporal_known_cat_col_list': temporal_known_cat_col_list,
-    #                         'sort_col_list': sort_col_list,
-    #                         'wt_col': None,
-    #                         }   
-    #         eda_object = eda.eda(col_dict=amz_columns_dict)
-    #         save_path = download_path
-    #         from pathlib import Path
-    #         #if os.path.exists(save_path):
-    #         name_of_file = file_name
-    #         file_path = Path(save_path, name_of_file+".html")     
-    #         eda_object.create_report(data=df, filename=file_path) 
-            # else:
-            #     return render(request,'home/index.html', {'message': 'download path is not exist'})
-            # user = request.user
-            # if user.email:
-            #     from_email = settings.FROM_EMAIL
-            #     recipient_email = user.email
-            #     subject = 'EDA file generated'
-            #     message = 'Your EDA file is generated successfully.'
-            #     try:
-            #         from django.core.mail import send_mail
-            #         status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
-            #     except Exception as e:
-            #         return render(request,'home/index.html', {'message': 'email error'})
-            # else:
-            #     recipient_email = None
-    #         return render(request,'home/index.html', {'message': 'Save Complete'})
-    # except Exception as e:
-    #     print('error is---->', e)
-    #     return render(request,'home/index.html', {'message': 'Error while generating EDA'})
+    if request.method == 'POST':
+        id_col = request.POST.get('id_col')
+        target_col = request.POST.get('target_col')
+        time_index_col = request.POST.get('time_index_col')
+        file_name = request.POST.get('file_name')
+        download_path = request.POST.get('download_path')
+        static_cat_col_list = request.POST.getlist('static_cat_col_list')
+        temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
+        temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
+        sort_col_list = request.POST.getlist('sort_col_list')
+        amz_columns_dict = {'id_col': id_col,
+                        'target_col': target_col,
+                        'time_index_col': time_index_col,
+                        'static_cat_col_list': static_cat_col_list,
+                        'temporal_known_num_col_list':  temporal_known_num_col_list,
+                        'temporal_known_cat_col_list': temporal_known_cat_col_list,
+                        'sort_col_list': sort_col_list,
+                        'wt_col': None,
+                        }
+        try:   
+            eda_object = eda.eda(col_dict=amz_columns_dict)
+            save_path = download_path
+            from pathlib import Path
+            import os
+            if os.path.exists(save_path):
+                name_of_file = file_name
+                file_path = Path(save_path, name_of_file+".html")     
+                eda_object.create_report(data=df, filename=file_path)
+                # user = request.user
+                # if user.email:
+                #     from_email = settings.FROM_EMAIL
+                #     recipient_email = user.email
+                #     subject = 'EDA file generated'
+                #     message = 'Your EDA file is generated successfully.'
+                #     try:
+                #         from django.core.mail import send_mail
+                #         status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
+                #     except Exception as e:
+                #         return render(request,'home/index.html', {'message': 'email error'})
+                # else:
+                #     recipient_email = None 
+                return render(request,'home/index.html', {'message': 'Save Complete'})
+            else:
+                return render(request,'home/index.html', {'message': 'download path is not exist'})
+        except Exception as e:
+            # print('error is---->', e)
+            return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)
