@@ -25,8 +25,7 @@ from django.contrib import messages
 from django.shortcuts import render
 
 # from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
-token = lib.auth()
-adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
+
 # api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
 
@@ -86,6 +85,8 @@ import json
 def eda_flow(request):
     path = '/Unilever/satyajit/us_amz.csv'
     mode = 'rb'
+    token = lib.auth()
+    adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
     # df = eda_flow_task.delay(path, mode)
     #df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     with adls_client.open(path, mode) as f:
