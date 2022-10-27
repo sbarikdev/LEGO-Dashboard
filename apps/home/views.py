@@ -83,15 +83,16 @@ import json
 
 @login_required(login_url="/login/")
 def eda_flow(request):
-    path = '/Unilever/satyajit/us_amz.csv'
-    mode = 'rb'
+    data = None
     token = lib.auth()
     adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
+    path = '/Unilever/satyajit/us_amz.csv'
+    mode = 'rb'
     # df = eda_flow_task.delay(path, mode)
     #df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     with adls_client.open(path, mode) as f:
         df = pd.read_csv(f, low_memory=False)
-    df = df.head(100)
+    df = df.head(2000)
     json_records = df.reset_index().to_json(orient ='records')
     data = []
     data = json.loads(json_records)
@@ -109,9 +110,13 @@ def eda_flow(request):
         amz_columns_dict = {'id_col': id_col,
                         'target_col': target_col,
                         'time_index_col': time_index_col,
+                        'static_num_col_list': [],
                         'static_cat_col_list': static_cat_col_list,
                         'temporal_known_num_col_list':  temporal_known_num_col_list,
+                        'temporal_unknown_num_col_list': [],
                         'temporal_known_cat_col_list': temporal_known_cat_col_list,
+                        'temporal_unknown_cat_col_list': [],
+                        'strata_col_list': [],
                         'sort_col_list': sort_col_list,
                         'wt_col': None,
                         }
@@ -124,7 +129,7 @@ def eda_flow(request):
                 name_of_file = file_name
                 file_path = Path(save_path, name_of_file+".html")     
                 eda_object.create_report(data=df, filename=file_path)
-                # user = request.user
+                user = request.user
                 # if user.email:
                 #     from_email = settings.FROM_EMAIL
                 #     recipient_email = user.email
@@ -141,6 +146,6 @@ def eda_flow(request):
             else:
                 return render(request,'home/index.html', {'message': 'download path is not exist'})
         except Exception as e:
-            # print('error is---->', e)
+            print('error is---->', e)
             return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)
