@@ -17,3 +17,12 @@ Follow the steps to run this project:
 6. python manage.py runserver
 
 then run http://localhost:8000 on your browser.
+
+
+## Docker:
+sudo chown $USER /var/run/docker.sock
+docker-compose build
+docker-compose up
+
+## celery: 
+celery -A core worker -l info

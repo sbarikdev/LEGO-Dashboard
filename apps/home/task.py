@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 @shared_task
-def aync_task(amz_columns_dict, download_path, file_name):
+def async_task(amz_columns_dict, download_path, file_name):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     df = df.head(3500)
