@@ -28,7 +28,7 @@ from django.shortcuts import render
 
 # api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
-from apps.home.task import aync_task
+from apps.home.task import async_task
 
 @login_required(login_url="/login/")
 def index(request):
@@ -87,8 +87,8 @@ def eda_flow(request):
     data = None
     # token = lib.auth()
     # adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
-    path = '/Unilever/satyajit/us_amz.csv'
-    mode = 'rb'
+    # path = '/Unilever/satyajit/us_amz.csv'
+    # mode = 'rb'
     # df = eda_flow_task.delay(path, mode)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     # with adls_client.open(path, mode) as f:
@@ -132,7 +132,7 @@ def eda_flow(request):
                 # name_of_file = file_name
                 # file_path = Path(save_path, name_of_file+".html")     
                 # eda_object.create_report(data=df, filename=file_path)
-                status = aync_task.delay(amz_columns_dict, download_path, file_name)
+                status = async_task.delay(amz_columns_dict, download_path, file_name)
                 print('status--------------->', status)
                 user = request.user
                 # if user.email:
