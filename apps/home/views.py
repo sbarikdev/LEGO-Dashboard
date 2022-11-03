@@ -81,11 +81,10 @@ import json
 #     plt.savefig('apps/static/assets/pic.png')
 #     return render(request, "home/tables-data.html", context)
 
-
 @login_required(login_url="/login/")
 def eda_flow(request):
     data = None
-    # token = lib.auth()
+    #token = lib.auth()
     # adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
     # path = '/Unilever/satyajit/us_amz.csv'
     # mode = 'rb'
@@ -97,7 +96,6 @@ def eda_flow(request):
     json_records = df.reset_index()
     data = []
     data = json.loads(json_records.to_json(orient ='records'))
-    # data2 = pd.DataFrame(data)
     context = {'data': data, 'message': 'data loaded successfully.'}
     if request.method == 'POST':
         id_col = request.POST.get('id_col')
@@ -123,15 +121,12 @@ def eda_flow(request):
                         'wt_col': None,
                         }
         print('amz_columns_dict-------->', amz_columns_dict)
+        from core.settings import BASE_DIR
+        import os
+        download_path = os.path.join(BASE_DIR, "input_files/")
         try:   
             from pathlib import Path
-            import os
             if os.path.exists(download_path):
-                # eda_object = eda.eda(col_dict=amz_columns_dict)
-                # save_path = download_path
-                # name_of_file = file_name
-                # file_path = Path(save_path, name_of_file+".html")     
-                # eda_object.create_report(data=df, filename=file_path)
                 status = async_task.delay(amz_columns_dict, download_path, file_name)
                 print('status--------------->', status)
                 user = request.user
