@@ -143,7 +143,6 @@ def eda_flow(request):
                 #         return render(request,'home/index.html', {'message': 'email error'})
                 # else:
                 #     recipient_email = None 
-                print('complete file path------------>')
                 return render(request,'home/index.html', {'message': 'Save Complete'})
             else:
                 return render(request,'home/index.html', {'message': 'download path is not exist'})
