@@ -188,32 +188,5 @@ def training_model(request):
                         'wt_col': None,
                         }
         print('amz_columns_dict-------->', amz_columns_dict)
-        # from core.settings import BASE_DIR
-        # import os
-        # download_path = os.path.join(BASE_DIR, "input_files/")
-        # try:   
-        #     from pathlib import Path
-        #     if os.path.exists(download_path):
-        #         status = async_task.delay(amz_columns_dict, download_path, file_name)
-        #         print('status--------------->', status)
-        #         user = request.user
-        #         # if user.email:
-        #         #     from_email = settings.FROM_EMAIL
-        #         #     recipient_email = user.email
-        #         #     subject = 'EDA file generated'
-        #         #     message = 'Your EDA file is generated successfully.'
-        #         #     try:
-        #         #         from django.core.mail import send_mail
-        #         #         status = send_mail(subject, message, from_email, [recipient_email, ], fail_silently=False)
-        #         #     except Exception as e:
-        #         #         print('email error is ------>', e)
-        #         #         return render(request,'home/index.html', {'message': 'email error'})
-        #         # else:
-        #         #     recipient_email = None 
-        #         return render(request,'home/index.html', {'message': 'Save Complete'})
-        #     else:
-        #         return render(request,'home/index.html', {'message': 'download path is not exist'})
-        # except Exception as e:
-        #     print('error is---->', e)
-        #     return render(request,'home/index.html', {'message': 'Error while generating EDA'})
+        
     return render(request, "home/data/training-model.html", context)
