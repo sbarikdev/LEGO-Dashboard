@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     # path('tables_data', views.tables_data, name='tables_data'),
     path('eda_flow', views.eda_flow, name='eda_flow'),
+    path('training_model', views.training_model, name='training_model'),
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages')
 
