@@ -20,9 +20,9 @@ then run http://localhost:8000 on your browser.
 
 
 ## Docker:
-sudo chown $USER /var/run/docker.sock
-docker-compose build
-docker-compose up
+1. sudo chown $USER /var/run/docker.sock
+2. docker-compose build
+3. docker-compose up
 
 ## celery: 
 celery -A core worker -l info

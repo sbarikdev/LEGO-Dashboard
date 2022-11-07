@@ -150,3 +150,43 @@ def eda_flow(request):
             print('error is---->', e)
             return render(request,'home/index.html', {'message': 'Error while generating EDA'})
     return render(request, "home/tables-simple.html", context)
+
+
+
+@login_required(login_url="/login/")
+def training_model(request):
+    data = None
+    df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
+    # with adls_client.open(path, mode) as f:
+    #     df = pd.read_csv(f, low_memory=False)
+    df = df.head(100)
+    json_records = df.reset_index()
+    data = []
+    data = json.loads(json_records.to_json(orient ='records'))
+    context = {'data': data, 'message': 'data loaded successfully.'}
+    if request.method == 'POST':
+        id_col = request.POST.get('id_col')
+        target_col = request.POST.get('target_col')
+        time_index_col = request.POST.get('time_index_col')
+        file_name = request.POST.get('file_name')
+        download_path = request.POST.get('download_path')
+        static_cat_col_list = request.POST.getlist('static_cat_col_list')
+        temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
+        temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
+        sort_col_list = request.POST.getlist('sort_col_list')
+        amz_columns_dict = {'id_col': id_col,
+                        'target_col': target_col,
+                        'time_index_col': time_index_col,
+                        'static_num_col_list': [],
+                        'static_cat_col_list': static_cat_col_list,
+                        'temporal_known_num_col_list':  temporal_known_num_col_list,
+                        'temporal_unknown_num_col_list': [],
+                        'temporal_known_cat_col_list': temporal_known_cat_col_list,
+                        'temporal_unknown_cat_col_list': [],
+                        'strata_col_list': [],
+                        'sort_col_list': sort_col_list,
+                        'wt_col': None,
+                        }
+        print('amz_columns_dict-------->', amz_columns_dict)
+        
+    return render(request, "home/data/training-model.html", context)
