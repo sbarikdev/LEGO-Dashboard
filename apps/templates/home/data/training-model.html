@@ -110,8 +110,8 @@
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-          <label for="peas">id_col:</label>
-          <select class="selectpicker" multiple="false" name="id_col" id="id_col">
+          <label for="peas">key_col:</label>
+          <select class="selectpicker" multiple="false" name="key_col" id="key_col">
               <option value="cpf">cpf</option>
           </select>
           <label for="peas">target_col:</label>
@@ -122,26 +122,33 @@
           <select class="selectpicker" multiple="false" name="time_index_col" id="time_index_col">
             <option value="G_WEEK">G_WEEK</option>
           </select>
-          <label for="peas">static_cat_col_list:</label>
-          <select class="selectpicker" multiple="true" name="static_cat_col_list" id="static_cat_col_list">
+          <label for="peas">static_cat_cols:</label>
+          <select class="selectpicker" multiple="true" name="static_cat_cols" id="static_cat_cols">
             <option value="BrandCode">BrandCode</option>
             <option value="SubcategoryCode">SubcategoryCode</option>
             <option value="CategoryCode">CategoryCode</option>
             <option value="CUSTOMER">CUSTOMER</option>
+            <option value="UPC">UPC</option>
           </select>
-          <label for="peas">temporal_known_num_col_list:</label>
-          <select class="selectpicker" multiple="true" name="temporal_known_num_col_list" id="temporal_known_num_col_list">
+          <label for="peas">promo_num_cols:</label>
+          <select class="selectpicker" multiple="true" name="promo_num_cols" id="promo_num_cols">
             <option value="Percent_Discount">Percent_Discount</option>
             <option value="Product_discount">Product_discount</option>
             <option value="Fixed_Discount">Fixed_Discount</option>
+          </select>
+          <label for="peas">known_num_cols:</label>
+          <select class="selectpicker" multiple="true" name="known_num_cols" id="known_num_cols">
             <option value="Holidays">Holidays</option>
             <option value="Losses">Losses</option>
             <option value="stringency_index">stringency_index</option>
           </select>
-          <label for="peas">temporal_known_cat_col_list:</label>
-          <select class="selectpicker" multiple="true" name="temporal_known_cat_col_list" id="temporal_known_cat_col_list">
+          <label for="peas">date_cols:</label>
+          <select class="selectpicker" multiple="true" name="date_cols" id="date_cols">
             <option value="W">W</option>
             <option value="M">M</option>
+          </select>
+          <label for="peas">event_cols:</label>
+          <select class="selectpicker" multiple="true" name="event_cols" id="event_cols">
             <option value="prime_day">prime_day</option>
             <option value="Black_Friday">Black_Friday</option>
             <option value="EASTER">EASTER</option>
@@ -151,17 +158,16 @@
             <option value="VALENTINES_DAY">VALENTINES_DAY</option>
             <option value="BACK_TO_SCHOOL_WEEK">BACK_TO_SCHOOL_WEEK</option>
           </select>
-          <label for="peas">sort_col_list:</label>
-          <select class="mul-select" multiple="true" name="sort_col_list" id="sort_col_list">
-            <option value="cpf">cpf</option>
-            <option value="G_WEEK">G_WEEK</option>
+          <label for="peas">strata_cols:</label>
+          <select class="mul-select" multiple="true" name="strata_cols" id="strata_cols">
+            <option value="TrainGroup">TrainGroup</option>
           </select>
           <br><br>
-          <label for="fname">File name:</label>
+          <!-- <label for="fname">File name:</label>
           <input type="text" id="file_name" name="file_name">
           <br><br>
           <label for="fname">Download path:</label>
-          <input type="text" id="download_path" name="download_path">
+          <input type="text" id="download_path" name="download_path"> -->
 
           </div>
           <!-- /.col -->
