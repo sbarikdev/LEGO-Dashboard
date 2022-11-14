@@ -201,8 +201,11 @@ def training_model(request):
         print('amz_columns_dict-------->', amz_columns_dict)
 
         # Training specific parameters
+        metric = request.POST.getlist('metric')
+        learning_rate = request.POST.get('learning_rate')
+        print('learning_rate--------->', learning_rate)
         try:
-            status = async__training_task.delay(amz_columns_dict,promo_num_cols)
+            status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate)
             print('status--------------->', status)
             print('welcome---------->')
             return render(request,'home/index.html', {'message': 'Save Complete'})
