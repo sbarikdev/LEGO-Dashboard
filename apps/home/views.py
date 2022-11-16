@@ -158,7 +158,7 @@ def eda_flow(request):
         except Exception as e:
             print('error is---->', e)
             return render(request,'home/index.html', {'message': 'Error while generating EDA'})
-    return render(request, "home/tables-simple.html", context)
+    return render(request, "home/data/eda-flow.html", context)
 
 
 
@@ -174,38 +174,96 @@ def training_model(request):
     data = json.loads(json_records.to_json(orient ='records'))
     context = {'data': data, 'message': 'data loaded successfully.'}
     if request.method == 'POST':
-
-        key_col = request.POST.get('key_col')
-        time_index_col = request.POST.get('time_index_col')
+        id_col = request.POST.get('id_col')
         target_col = request.POST.get('target_col')
-        event_cols = request.POST.getlist('event_cols')
-        date_cols = request.POST.getlist('date_cols')
+        time_index_col = request.POST.get('time_index_col')
+        static_cat_col_list = request.POST.getlist('static_cat_col_list')
+        temporal_known_num_col_list = request.POST.getlist('temporal_known_num_col_list')
+        temporal_known_cat_col_list = request.POST.getlist('temporal_known_cat_col_list')
+        sort_col_list = request.POST.getlist('sort_col_list')
         promo_num_cols = request.POST.getlist('promo_num_cols')
-        static_cat_cols = request.POST.getlist('static_cat_cols')
-        known_num_cols = request.POST.getlist('known_num_cols')
-        unknown_num_cols = request.POST.getlist('unknown_num_cols')
         strata_cols = request.POST.getlist('strata_cols')
-
-        amz_columns_dict = {'id_col': key_col,
-                    'target_col': target_col,
-                    'time_index_col': time_index_col,
-                    'static_num_col_list': [],
-                    'static_cat_col_list': static_cat_cols,
-                    'temporal_known_num_col_list': event_cols + known_num_cols + promo_num_cols,
-                    'temporal_unknown_num_col_list': [],
-                    'temporal_known_cat_col_list': date_cols,
-                    'temporal_unknown_cat_col_list': [],
-                    'strata_col_list': [],
-                    'sort_col_list': [key_col,time_index_col],
-                    'wt_col': None}
+        amz_columns_dict = {'id_col': id_col,
+                        'target_col': target_col,
+                        'time_index_col': time_index_col,
+                        'static_num_col_list': [],
+                        'static_cat_col_list': static_cat_col_list,
+                        'temporal_known_num_col_list':  temporal_known_num_col_list,
+                        'temporal_unknown_num_col_list': [],
+                        'temporal_known_cat_col_list': temporal_known_cat_col_list,
+                        'temporal_unknown_cat_col_list': [],
+                        'strata_col_list': [],
+                        'sort_col_list': sort_col_list,
+                        'wt_col': None,
+                        }
         print('amz_columns_dict-------->', amz_columns_dict)
+
+        #data_obj parameter
+        window_len=int(request.POST.get('window_len'))
+        fh=int(request.POST.get('fh'))
+        batch=int(request.POST.get('batch'))
+        min_nz=int(request.POST.get('min_nz'))
+        PARALLEL_DATA_JOBS=int(request.POST.get('PARALLEL_DATA_JOBS'))
+        PARALLEL_DATA_JOBS_BATCHSIZE=int(request.POST.get('PARALLEL_DATA_JOBS_BATCHSIZE'))
+
+        data_obj_param = {'window_len': window_len,
+                        'fh': fh,
+                        'batch': batch,
+                        'min_nz': min_nz,
+                        'PARALLEL_DATA_JOBS': PARALLEL_DATA_JOBS,
+                        'PARALLEL_DATA_JOBS_BATCHSIZE':  PARALLEL_DATA_JOBS_BATCHSIZE,
+                        }
+        print('data_obj_param-------->', data_obj_param)
+
+        #build model
+        num_layers =int(request.POST.get('num_layers'))
+        num_heads = int(request.POST.get('num_heads'))
+        kernel_sizes = int(request.POST.getlist('kernel_sizes'))
+        d_model = int(request.POST.get('d_model'))
+        forecast_horizon = int(request.POST.get('forecast_horizon'))
+        max_inp_len = int(request.POST.get('max_inp_len'))
+        loss_type = request.POST.getlist('loss_type')
+        num_quantiles = int(request.POST.get('num_quantiles'))      
+        decoder_lags = int(request.POST.get('decoder_lags'))   
+        dropout_rate= int(request.POST.get('dropout_rate'))
+
+        build_model_param = {'num_layers': num_layers,
+                        'num_heads': num_heads,
+                        'kernel_sizes': kernel_sizes,
+                        'd_model': d_model,
+                        'forecast_horizon': forecast_horizon,
+                        'max_inp_len':  max_inp_len,
+                        'loss_type': loss_type,
+                        'num_quantiles': num_quantiles,
+                        'decoder_lags': decoder_lags,
+                        'dropout_rate': dropout_rate,
+                        }
+        print('build_model_param-------->', build_model_param)
 
         # Training specific parameters
         metric = request.POST.getlist('metric')
-        learning_rate = request.POST.get('learning_rate')
-        print('learning_rate--------->', learning_rate)
+        learning_rate = float(request.POST.get('learning_rate'))
+        max_epochs=int(request.POST.get('max_epochs'))
+        min_epochs=int(request.POST.get('min_epochs'))
+        train_steps_per_epoch=int(request.POST.get('train_steps_per_epoch'))
+        test_steps_per_epoch=int(request.POST.get('test_steps_per_epoch'))
+        patience=int(request.POST.get('patience'))
+
+        training_spec_param = {'metric': metric,
+                        'learning_rate': learning_rate,
+                        'max_epochs': max_epochs,
+                        'min_epochs': min_epochs,
+                        'train_steps_per_epoch': train_steps_per_epoch,
+                        'test_steps_per_epoch':  test_steps_per_epoch,
+                        'patience': patience,
+                        }
+        print('training_spec_param-------->', training_spec_param)
         try:
-            status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate)
+            status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
+            num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
+            dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
+            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE
+            )
             print('status--------------->', status)
             print('welcome---------->')
             return render(request,'home/index.html', {'message': 'Save Complete'})

@@ -24,7 +24,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block content %} 
@@ -60,7 +61,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <form method="POST">
+        <form id="regForm" method="POST">
           {% csrf_token%}
         <div class="row">
           <div class="col-12">
@@ -110,90 +111,119 @@
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-          <label for="peas">key_col:</label>
-          <select class="selectpicker" multiple="false" name="key_col" id="key_col">
+        <h1>Train Model:</h1>
+        <!-- One "tab" for each step in the form: -->
+        <div class="tab">amz_columns_dict:<br><hr>
+          <label for="peas">id_col:</label>
+            <select class="selectpicker" multiple="false" name="id_col" id="id_col" required>
+                <option value="cpf">cpf</option>
+            </select><br><br>
+            <label for="peas">target_col:</label>
+            <select class="selectpicker" multiple="false" name="target_col" id="target_col" required>
+                <option value="PHY_CS">PHY_CS</option>
+            </select><br><br>
+            <label for="peas">time_index_col:</label>
+            <select class="selectpicker" multiple="false" name="time_index_col" id="time_index_col" required>
+              <option value="G_WEEK">G_WEEK</option>
+            </select><br><br>
+            <label for="peas">static_cat_col_list:</label>
+            <select class="selectpicker" multiple="true" name="static_cat_col_list" id="static_cat_col_list" required>
+              <option value="BrandCode">BrandCode</option>
+              <option value="SubcategoryCode">SubcategoryCode</option>
+              <option value="CategoryCode">CategoryCode</option>
+              <option value="CUSTOMER">CUSTOMER</option>
+            </select><br><br>
+            <label for="peas">temporal_known_num_col_list:</label>
+            <select class="selectpicker" multiple="true" name="temporal_known_num_col_list" id="temporal_known_num_col_list" required>
+              <option value="Percent_Discount">Percent_Discount</option>
+              <option value="Product_discount">Product_discount</option>
+              <option value="Fixed_Discount">Fixed_Discount</option>
+              <option value="Holidays">Holidays</option>
+              <option value="Losses">Losses</option>
+              <option value="stringency_index">stringency_index</option>
+            </select><br><br>
+            <label for="peas">temporal_known_cat_col_list:</label>
+            <select class="selectpicker" multiple="true" name="temporal_known_cat_col_list" id="temporal_known_cat_col_list" required>
+              <option value="W">W</option>
+              <option value="M">M</option>
+              <option value="prime_day">prime_day</option>
+              <option value="Black_Friday">Black_Friday</option>
+              <option value="EASTER">EASTER</option>
+              <option value="NY/Cristmass">NY/Cristmass</option>
+              <option value="TANKSGIVING">TANKSGIVING</option>
+              <option value="MOTHERS_DAY">MOTHERS_DAY</option>
+              <option value="VALENTINES_DAY">VALENTINES_DAY</option>
+              <option value="BACK_TO_SCHOOL_WEEK">BACK_TO_SCHOOL_WEEK</option>
+            </select><br><br>
+            <label for="peas">sort_col_list:</label>
+            <select class="mul-select" multiple="true" name="sort_col_list" id="sort_col_list" required>
               <option value="cpf">cpf</option>
-          </select>
-          <label for="peas">target_col:</label>
-          <select class="selectpicker" multiple="false" name="target_col" id="target_col">
-              <option value="PHY_CS">PHY_CS</option>
-          </select>
-          <label for="peas">time_index_col:</label>
-          <select class="selectpicker" multiple="false" name="time_index_col" id="time_index_col">
-            <option value="G_WEEK">G_WEEK</option>
-          </select>
-          <label for="peas">static_cat_cols:</label>
-          <select class="selectpicker" multiple="true" name="static_cat_cols" id="static_cat_cols">
-            <option value="BrandCode">BrandCode</option>
-            <option value="SubcategoryCode">SubcategoryCode</option>
-            <option value="CategoryCode">CategoryCode</option>
-            <option value="CUSTOMER">CUSTOMER</option>
-            <option value="UPC">UPC</option>
-          </select>
-          <label for="peas">promo_num_cols:</label>
-          <select class="selectpicker" multiple="true" name="promo_num_cols" id="promo_num_cols">
-            <option value="Percent_Discount">Percent_Discount</option>
-            <option value="Product_discount">Product_discount</option>
-            <option value="Fixed_Discount">Fixed_Discount</option>
-          </select>
-          <label for="peas">known_num_cols:</label>
-          <select class="selectpicker" multiple="true" name="known_num_cols" id="known_num_cols">
-            <option value="Holidays">Holidays</option>
-            <option value="Losses">Losses</option>
-            <option value="stringency_index">stringency_index</option>
-          </select>
-          <label for="peas">date_cols:</label>
-          <select class="selectpicker" multiple="true" name="date_cols" id="date_cols">
-            <option value="W">W</option>
-            <option value="M">M</option>
-          </select>
-          <label for="peas">event_cols:</label>
-          <select class="selectpicker" multiple="true" name="event_cols" id="event_cols">
-            <option value="prime_day">prime_day</option>
-            <option value="Black_Friday">Black_Friday</option>
-            <option value="EASTER">EASTER</option>
-            <option value="NY/Cristmass">NY/Cristmass</option>
-            <option value="TANKSGIVING">TANKSGIVING</option>
-            <option value="MOTHERS_DAY">MOTHERS_DAY</option>
-            <option value="VALENTINES_DAY">VALENTINES_DAY</option>
-            <option value="BACK_TO_SCHOOL_WEEK">BACK_TO_SCHOOL_WEEK</option>
-          </select>
+              <option value="G_WEEK">G_WEEK</option>
+            </select><br><br>
           <label for="peas">strata_cols:</label>
-          <select class="mul-select" multiple="true" name="strata_cols" id="strata_cols">
+          <select class="mul-select" multiple="true" name="strata_cols" id="strata_cols" required>
             <option value="TrainGroup">TrainGroup</option>
-          </select>
-          <br><br>
-          <b><hr></b>
-          <label for="peas">metric:</label>
-          <select class="mul-select" multiple="true" name="metric" id="metric">
-            <option value="MSE">MSE</option>
-            <option value="MAE">MAE</option>
-          </select>
-          <br>
-          <label for="fname">learning_rate:</label>
-          <input type="number" id="learning_rate" name="learning_rate" step=any min="0" max="1" required>
-          <br>
-          <!-- <label for="fname">File name:</label>
-          <input type="text" id="file_name" name="file_name">
-          <br><br>
-          <label for="fname">Download path:</label>
-          <input type="text" id="download_path" name="download_path"> -->
+          </select><br>
+        </div>
+        <div class="tab">data_obj parameter: <br><hr>
+          <p><input type="number" placeholder="window_len" oninput="this.className = ''" id="window_len" name="window_len" step=any required></p>
+          <p><input type="number" placeholder="fh" oninput="this.className = ''" id="fh" name="fh" step=any required></p>
+          <p><input type="number" placeholder="batch" oninput="this.className = ''" id="batch" name="batch" step=any required></p>
+          <p><input type="number" placeholder="min_nz" oninput="this.className = ''" id="min_nz" name="min_nz" step=any required></p>
+          <p><input type="number" placeholder="PARALLEL_DATA_JOBS" oninput="this.className = ''" id="PARALLEL_DATA_JOBS" name="PARALLEL_DATA_JOBS" step=any required></p>
+          <p><input type="number" placeholder="PARALLEL_DATA_JOBS_BATCHSIZE" oninput="this.className = ''" id="PARALLEL_DATA_JOBS_BATCHSIZE" name="PARALLEL_DATA_JOBS_BATCHSIZE" step=any required></p>
+        </div>
 
+        <div class="tab">build model:<br><hr>
+          <p><input type="number" placeholder="num_layers" oninput="this.className = ''" name="num_layers" id="num_layers" step=any min="0" max="1" required></p>
+          <p><input type="number" placeholder="num_heads" oninput="this.className = ''" name="num_heads" id="num_heads"></p>
+          <p><input type="number" placeholder="kernel_sizes" oninput="this.className = ''" name="kernel_sizes" id="kernel_sizes"></p>
+          <p><input type="number" placeholder="d_model" oninput="this.className = ''" name="d_model" id="d_model"></p>
+          <p><input type="number" placeholder="forecast_horizon" oninput="this.className = ''" name="forecast_horizon" id="forecast_horizon"></p>
+          <p><input type="number" placeholder="max_inp_len" oninput="this.className = ''" name="max_inp_len" id="max_inp_len"></p>
+          <label for="peas">loss_type:</label>
+            <select class="mul-select" multiple="true" name="loss_type" id="loss_type" required>
+              <option value="Point">Point</option>
+              <option value="Quantile">Quantile</option>
+              <option value="Negbin">Negbin</option>
+              <option value="Poisson">Poisson</option>
+              <option value="Normal">Normal</option>
+            </select><br><br>
+          <p><input type="number" placeholder="num_quantiles" oninput="this.className = ''" name="num_quantiles" id="num_quantiles"></p>
+          <p><input type="number" placeholder="decoder_lags" oninput="this.className = ''" name="decoder_lags" id="decoder_lags"></p>
+          <p><input type="number" placeholder="dropout_rate" oninput="this.className = ''" name="dropout_rate" id="dropout_rate"></p>
+        </div>
+
+        <div class="tab">Training specific parameters:<br><hr>
+          <label for="peas">metric:</label>
+            <select class="mul-select" multiple="true" name="metric" id="metric" required>
+              <option value="MSE">MSE</option>
+              <option value="MAE">MAE</option>
+            </select><br><br>
+          <p><input type="number" placeholder="learning_rate" oninput="this.className = ''" name="learning_rate" id="learning_rate" min="0" max="1"></p>
+          <p><input type="number" placeholder="max_epochs" oninput="this.className = ''" name="max_epochs" id="max_epochs"></p>
+          <p><input type="number" placeholder="min_epochs" oninput="this.className = ''" name="min_epochs" id="min_epochs"></p>
+          <p><input type="number" placeholder="train_steps_per_epoch" oninput="this.className = ''" name="train_steps_per_epoch" id="train_steps_per_epoch"></p>
+          <p><input type="number" placeholder="test_steps_per_epoch" oninput="this.className = ''" name="test_steps_per_epoch" id="test_steps_per_epoch"></p>
+          <p><input type="number" placeholder="patience" oninput="this.className = ''" name="patience" id="patience"></p>
+        </div>
+        <div style="overflow:auto;">
+          <div style="float:right;">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+          </div>
+        </div>
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+          <span class="step"></span>
+          <span class="step"></span>
+          <span class="step"></span>
+          <span class="step"></span>
+        </div>
           </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
-        <br>
-        <br>
-        
-        <div class="row no-print">
-          <div class="col-12">
-            <!-- <button type="button" value="POST" type="submit" class="btn btn-primary float-right" style="margin-right: 5px;">
-              <i class="fas fa-download"></i> Generate EDA
-            </button> -->
-            <input type="submit" value="Train Model" style="margin-right: 5px;">
-          </div>
-        </div>
       </form>
         <br>
         <br>
@@ -243,7 +273,161 @@
         "responsive": true,
       });
     });
+
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+
+    function showTab(n) {
+      // This function will display the specified tab of the form...
+      var x = document.getElementsByClassName("tab");
+      x[n].style.display = "block";
+      //... and fix the Previous/Next buttons:
+      if (n == 0) {
+        document.getElementById("prevBtn").style.display = "none";
+      } else {
+        document.getElementById("prevBtn").style.display = "inline";
+      }
+      if (n == (x.length - 1)) {
+        document.getElementById("nextBtn").innerHTML = "Submit";
+      } else {
+        document.getElementById("nextBtn").innerHTML = "Next";
+      }
+      //... and run a function that will display the correct step indicator:
+      fixStepIndicator(n)
+    }
+
+    function nextPrev(n) {
+      // This function will figure out which tab to display
+      var x = document.getElementsByClassName("tab");
+      // Exit the function if any field in the current tab is invalid:
+      if (n == 1 && !validateForm()) return false;
+      // Hide the current tab:
+      x[currentTab].style.display = "none";
+      // Increase or decrease the current tab by 1:
+      currentTab = currentTab + n;
+      // if you have reached the end of the form...
+      if (currentTab >= x.length) {
+        // ... the form gets submitted:
+        document.getElementById("regForm").submit();
+        return false;
+      }
+      // Otherwise, display the correct tab:
+      showTab(currentTab);
+    }
+
+    function validateForm() {
+      // This function deals with validation of the form fields
+      var x, y, i, valid = true;
+      x = document.getElementsByClassName("tab");
+      y = x[currentTab].getElementsByTagName("input");
+      // A loop that checks every input field in the current tab:
+      for (i = 0; i < y.length; i++) {
+        // If a field is empty...
+        if (y[i].value == "") {
+          // add an "invalid" class to the field:
+          y[i].className += " invalid";
+          // and set the current valid status to false
+          valid = false;
+        }
+      }
+      // If the valid status is true, mark the step as finished and valid:
+      if (valid) {
+        document.getElementsByClassName("step")[currentTab].className += " finish";
+      }
+      return valid; // return the valid status
+    }
+
+    function fixStepIndicator(n) {
+      // This function removes the "active" class of all steps...
+      var i, x = document.getElementsByClassName("step");
+      for (i = 0; i < x.length; i++) {
+        x[i].className = x[i].className.replace(" active", "");
+      }
+      //... and adds the "active" class on the current step:
+      x[n].className += " active";
+    }
+
+
     alert('{{ message }}');
   </script>
+
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #f1f1f1;
+  }
+  
+  #regForm {
+    background-color: #ffffff;
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%;
+    min-width: 500px;
+  }
+  
+  h1 {
+    text-align: center;  
+  }
+  
+  input {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+  }
+  
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+    background-color: #ffdddd;
+  }
+  
+  /* Hide all steps by default: */
+  .tab {
+    display: none;
+  }
+  
+  button {
+    background-color: #04AA6D;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-family: Raleway;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  #prevBtn {
+    background-color: #bbbbbb;
+  }
+  
+  /* Make circles that indicate the steps of the form: */
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;  
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  
+  .step.active {
+    opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: #04AA6D;
+  }
+  </style>
 
 {% endblock javascripts %}
