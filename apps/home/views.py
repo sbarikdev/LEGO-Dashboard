@@ -218,14 +218,14 @@ def training_model(request):
         #build model
         num_layers =int(request.POST.get('num_layers'))
         num_heads = int(request.POST.get('num_heads'))
-        kernel_sizes = int(request.POST.getlist('kernel_sizes'))
+        kernel_sizes = int(request.POST.get('kernel_sizes'))
         d_model = int(request.POST.get('d_model'))
         forecast_horizon = int(request.POST.get('forecast_horizon'))
         max_inp_len = int(request.POST.get('max_inp_len'))
-        loss_type = request.POST.getlist('loss_type')
+        loss_type = request.POST.get('loss_type')
         num_quantiles = int(request.POST.get('num_quantiles'))      
         decoder_lags = int(request.POST.get('decoder_lags'))   
-        dropout_rate= int(request.POST.get('dropout_rate'))
+        dropout_rate= float(request.POST.get('dropout_rate'))
 
         build_model_param = {'num_layers': num_layers,
                         'num_heads': num_heads,
@@ -241,7 +241,7 @@ def training_model(request):
         print('build_model_param-------->', build_model_param)
 
         # Training specific parameters
-        metric = request.POST.getlist('metric')
+        metric = request.POST.get('metric')
         learning_rate = float(request.POST.get('learning_rate'))
         max_epochs=int(request.POST.get('max_epochs'))
         min_epochs=int(request.POST.get('min_epochs'))

@@ -92,7 +92,7 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
                     vocab_dict = vocab,
                     num_layers = num_layers,
                     num_heads = num_heads,
-                    kernel_sizes = kernel_sizes,
+                    kernel_sizes = [1],
                     d_model = d_model,
                     forecast_horizon = forecast_horizon,
                     max_inp_len = max_inp_len,
@@ -102,23 +102,26 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
                     dropout_rate=dropout_rate)
         var_model.build()
         print('var_model build successfully---------------->')
-        # best_var_model = var_model.train(trainset, 
-        #             testset, 
-        #             loss_function = loss_fn,              
-        #             metric=metric,  #['MSE','MAE'] -- selection from menu
-        #             learning_rate=learning_rate, #0.00003, # explicit entry by user
-        #             max_epochs=max_epochs,  # rest all user eneters values
-        #             min_epochs=min_epochs,
-        #             train_steps_per_epoch=train_steps_per_epoch,
-        #             test_steps_per_epoch=test_steps_per_epoch,
-        #             patience=patience,
-        #             weighted_training=False,
-        #             model_prefix='/home/satyajit/Music/test',
-        #             logdir='/home/satyajit/Music/test')
-        # var_model.model.summary()
+    except Exception as e:
+        print('var_model error is: {}'.format(e))
+    try:
+        best_var_model = var_model.train(trainset, 
+                    testset, 
+                    loss_function = loss_fn,              
+                    metric=metric,  
+                    learning_rate=learning_rate,
+                    max_epochs=max_epochs,
+                    min_epochs=min_epochs,
+                    train_steps_per_epoch=train_steps_per_epoch,
+                    test_steps_per_epoch=test_steps_per_epoch,
+                    patience=patience,
+                    weighted_training=False,
+                    model_prefix='/home/satyajit/Music/test',
+                    logdir='/home/satyajit/Music/test')
+        var_model.model.summary()
         print('train model build successfully---------------->')
     except Exception as e:
-        print('error is: {}'.format(e))
+        print('train_model error is: {}'.format(e))
     return 'training task complete'
 
 
