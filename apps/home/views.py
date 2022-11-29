@@ -196,8 +196,6 @@ def training_model(request):
                         'sort_col_list': sort_col_list,
                         'wt_col': None,
                         }
-        print('amz_columns_dict-------->', amz_columns_dict)
-
         #data_obj parameter
         window_len=int(request.POST.get('window_len'))
         fh=int(request.POST.get('fh'))
@@ -213,12 +211,12 @@ def training_model(request):
                         'PARALLEL_DATA_JOBS': PARALLEL_DATA_JOBS,
                         'PARALLEL_DATA_JOBS_BATCHSIZE':  PARALLEL_DATA_JOBS_BATCHSIZE,
                         }
-        print('data_obj_param-------->', data_obj_param)
 
         #build model
         num_layers =int(request.POST.get('num_layers'))
         num_heads = int(request.POST.get('num_heads'))
-        kernel_sizes = int(request.POST.get('kernel_sizes'))
+        kernel_sizes = list(map(int, request.POST.get('kernel_sizes').split(',')))
+        print('kernel_sizes------>', kernel_sizes)
         d_model = int(request.POST.get('d_model'))
         forecast_horizon = int(request.POST.get('forecast_horizon'))
         max_inp_len = int(request.POST.get('max_inp_len'))
@@ -238,8 +236,6 @@ def training_model(request):
                         'decoder_lags': decoder_lags,
                         'dropout_rate': dropout_rate,
                         }
-        print('build_model_param-------->', build_model_param)
-
         # Training specific parameters
         metric = request.POST.get('metric')
         learning_rate = float(request.POST.get('learning_rate'))
@@ -257,18 +253,33 @@ def training_model(request):
                         'test_steps_per_epoch':  test_steps_per_epoch,
                         'patience': patience,
                         }
-        print('training_spec_param-------->', training_spec_param)
-        try:
-            status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
-            num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
-            dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
-            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE
-            )
-            print('status--------------->', status)
-            print('welcome---------->')
-            return render(request,'home/index.html', {'message': 'Save Complete'})
-        except Exception as e:
-            print('error is: {}'.format(e))
+        from collections import ChainMap  
+        training_param = str(dict(ChainMap(amz_columns_dict, data_obj_param, build_model_param, training_spec_param)))
+        print('training_param-------->', training_param)
+        import os.path
+        save_path = '/home/satyajit/Documents'
+        if os.path.exists(save_path):
+            name_of_file = 'training_param'
+            completeName = os.path.join(save_path, name_of_file+".txt")         
+            file1 = open(completeName, "w")
+            toFile = training_param
+            file1.write(toFile)
+            file1.close()
+        else:
+            print('path error')
+            return render(request,'home/index.html', {'message': 'enter the correct path'})
+        # try:
+        #     status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
+        #     num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
+        #     dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
+        #     window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE
+        #     )
+        #     print('status--------------->', status)
+        #     print('welcome---------->')
+        #     return render(request,'home/index.html', {'message': 'Save Complete'})
+        # except Exception as e:
+        #     print('error is: {}'.format(e))
     return render(request, "home/data/training-model.html", context)
+
 
 

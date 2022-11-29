@@ -92,7 +92,7 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
                     vocab_dict = vocab,
                     num_layers = num_layers,
                     num_heads = num_heads,
-                    kernel_sizes = [1],
+                    kernel_sizes = kernel_sizes,
                     d_model = d_model,
                     forecast_horizon = forecast_horizon,
                     max_inp_len = max_inp_len,
@@ -105,21 +105,29 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
     except Exception as e:
         print('var_model error is: {}'.format(e))
     try:
-        best_var_model = var_model.train(trainset, 
-                    testset, 
-                    loss_function = loss_fn,              
-                    metric=metric,  
-                    learning_rate=learning_rate,
-                    max_epochs=max_epochs,
-                    min_epochs=min_epochs,
-                    train_steps_per_epoch=train_steps_per_epoch,
-                    test_steps_per_epoch=test_steps_per_epoch,
-                    patience=patience,
-                    weighted_training=False,
-                    model_prefix='/home/satyajit/Music/test',
-                    logdir='/home/satyajit/Music/test')
-        var_model.model.summary()
-        print('train model build successfully---------------->')
+        from azure.datalake.store import core, lib, multithread
+        token = lib.auth()
+        adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
+        path = '/Unilever/satyajit/training_model/'
+        mode = 'wb'
+        with adls_client.open(path, mode) as f:
+            print('adls f--------------->', f)
+        #df = pd.read_csv(f, low_memory=False)
+            # best_var_model = var_model.train(trainset, 
+            #             testset, 
+            #             loss_function = loss_fn,              
+            #             metric=metric,  
+            #             learning_rate=learning_rate,
+            #             max_epochs=max_epochs,
+            #             min_epochs=min_epochs,
+            #             train_steps_per_epoch=train_steps_per_epoch,
+            #             test_steps_per_epoch=test_steps_per_epoch,
+            #             patience=patience,
+            #             weighted_training=False,
+            #             model_prefix='/home/satyajit/Documents',
+            #             logdir='/home/satyajit/Documents')
+            # var_model.model.summary()
+            print('train model build successfully---------------->')
     except Exception as e:
         print('train_model error is: {}'.format(e))
     return 'training task complete'

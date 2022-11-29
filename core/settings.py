@@ -188,11 +188,11 @@ STATICFILES_DIRS = (
 # CELERY_ROUTES = {
 #     'common_method.celery_tasks.send_mail_shared': {'queue': 'mail_queue'}
 # }
-# CELERY_BROKER_URL = 'amqp://admin@localhost:5672//'
-# CELERY_RESULT_BACKEND = 'amqp://localhost:5672'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_TASK_SERIALIZER = 'json'
+CELERY_BROKER_URL = 'amqp://admin@localhost:5672//'
+CELERY_RESULT_BACKEND = 'amqp://localhost:5672'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')

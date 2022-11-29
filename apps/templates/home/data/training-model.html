@@ -177,18 +177,17 @@
         <div class="tab">build model:<br><hr>
           <p><input type="number" placeholder="num_layers" oninput="this.className = ''" name="num_layers" id="num_layers" step=any min="0" max="1" required></p>
           <p><input type="number" placeholder="num_heads" oninput="this.className = ''" name="num_heads" id="num_heads"></p>
-          <p><input type="number" placeholder="kernel_sizes" oninput="this.className = ''" name="kernel_sizes" id="kernel_sizes"></p>
+          <p><input type="text" placeholder="kernel_sizes" name="kernel_sizes" id="kernel_sizes"></p>
           <p><input type="number" placeholder="d_model" oninput="this.className = ''" name="d_model" id="d_model"></p>
           <p><input type="number" placeholder="forecast_horizon" oninput="this.className = ''" name="forecast_horizon" id="forecast_horizon"></p>
           <p><input type="number" placeholder="max_inp_len" oninput="this.className = ''" name="max_inp_len" id="max_inp_len"></p>
           <label for="peas">loss_type:</label>
-            <!-- <select class="mul-select" name="loss_type" id="loss_type" required> -->
-            <select class="selectpicker" multiple="false" name="loss_type" id="loss_type" required>
+            <select name="loss_type" id="loss_type" required>
               <option value="Point">Point</option>
-              <!-- <option value="Quantile">Quantile</option>
+              <option value="Quantile">Quantile</option>
               <option value="Negbin">Negbin</option>
               <option value="Poisson">Poisson</option>
-              <option value="Normal">Normal</option> -->
+              <option value="Normal">Normal</option>
             </select><br><br>
           <p><input type="number" placeholder="num_quantiles" oninput="this.className = ''" name="num_quantiles" id="num_quantiles"></p>
           <p><input type="number" placeholder="decoder_lags" oninput="this.className = ''" name="decoder_lags" id="decoder_lags"></p>
@@ -198,9 +197,9 @@
         <div class="tab">Training specific parameters:<br><hr>
           <label for="peas">metric:</label>
             <!-- <select class="mul-select" multiple="true" name="metric" id="metric" required> -->
-            <select class="selectpicker" multiple="false" name="metric" id="metric" required>
+            <select name="metric" id="metric" required>
               <option value="MSE">MSE</option>
-              <!-- <option value="MAE">MAE</option> -->
+              <option value="MAE">MAE</option>
             </select><br><br>
           <p><input type="number" placeholder="learning_rate" oninput="this.className = ''" name="learning_rate" id="learning_rate" min="0" max="1"></p>
           <p><input type="number" placeholder="max_epochs" oninput="this.className = ''" name="max_epochs" id="max_epochs"></p>
