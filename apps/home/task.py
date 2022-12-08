@@ -1,5 +1,3 @@
-
-
 from __future__ import absolute_import,unicode_literals
 from celery import shared_task
 from time import sleep
@@ -10,17 +8,30 @@ import pandas as pd
 import uuid
 
 @shared_task
-def async_task(amz_columns_dict, download_path, file_name):
+def async_task(amz_columns_dict, download_path, file_name, username):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     df = df.head(2500)
     print("it's here----->")
     eda_object = eda.eda(col_dict=amz_columns_dict)
+    # save_path = download_path
+    import os
+    from core.settings import BASE_DIR
+    download_path = os.path.join(BASE_DIR, "projects/eda/%s/" % username)
+    if not os.path.exists(download_path):
+        try:
+            os.makedirs(download_path)
+            print('folder created----->')
+        except FileExistsError:
+        # directory already exists
+            pass
+    download_path = str(download_path)
+    print('download_path------------->', download_path)
+    uuid_no=uuid.uuid4().hex[:5]
+    name_of_file =  file_name + '_' + str(uuid_no)         
     save_path = download_path
-    # uuid_no=uuid.uuid4().hex[:5]
-    # name_of_file = str(uuid_no) + '_' + file_name
     # file_path = Path(save_path, name_of_file+".html")  
-    file_path = os.path.join(save_path, file_name+".html")    
+    file_path = os.path.join(save_path, name_of_file+".html")   
     eda_object.create_report(data=df, filename=file_path)
     return 'eda task complete'
 
@@ -29,7 +40,7 @@ def async_task(amz_columns_dict, download_path, file_name):
 def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
             num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
             dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
-            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE):
+            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE,username):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     df = df.head(1500)
@@ -106,6 +117,24 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
     except Exception as e:
         print('var_model error is: {}'.format(e))
     try:
+        import os
+        from core.settings import BASE_DIR
+        download_path = os.path.join(BASE_DIR, "projects/training/%s/" % username)
+        if not os.path.exists(download_path):
+            try:
+                os.makedirs(download_path)
+                print('folder created----->')
+            except FileExistsError:
+            # directory already exists
+                pass
+        download_path = str(download_path)
+        print('download_path------------->', download_path)
+        uuid_no=uuid.uuid4().hex[:6]
+        name_of_file =  str(uuid_no)         
+        save_path = download_path
+        # file_path = Path(save_path, name_of_file+".html")  
+        file_path = os.path.join(save_path, name_of_file) 
+
         best_var_model = var_model.train(trainset, 
                     testset, 
                     loss_function = loss_fn,              
@@ -117,8 +146,8 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
                     test_steps_per_epoch=test_steps_per_epoch,
                     patience=patience,
                     weighted_training=False,
-                    model_prefix='/home/satyajit/Documents',
-                    logdir='/home/satyajit/Documents')
+                    model_prefix=file_path,
+                    logdir=file_path)
         print('before train model build successfully---------------->')
         var_model.model.summary()
         print('after train model build successfully---------------->')

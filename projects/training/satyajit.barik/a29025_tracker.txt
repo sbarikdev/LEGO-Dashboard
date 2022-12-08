@@ -1,0 +1,12 @@
+Feature Weighted ConvTransformer Training started with following Model Parameters ... 
+----------------------------------------
+num_layers 1
+num_heads 1
+d_model 16
+forecast_horizon 13
+max_inp_len 13
+dropout_rate 0.1
+col_index_dict path /home/satyajit/Desktop/LEGO-Web/projects/training/satyajit.barik/a29025_col_index_dict.pkl
+vocab_dict path /home/satyajit/Desktop/LEGO-Web/projects/training/satyajit.barik/a29025_vocab_dict.pkl
+----------------------------------------
+

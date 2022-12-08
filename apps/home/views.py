@@ -444,7 +444,10 @@ def eda_flow(request):
         try:   
             from pathlib import Path
             if os.path.exists(download_path):
-                status = async_task.delay(amz_columns_dict, download_path, file_name)
+                user = request.user
+                username = user.username
+                print('usernameeeeeeeeeeeeee------------>', username)
+                status = async_task.delay(amz_columns_dict, download_path, file_name, username)
                 print('status--------------->', status)
                 user = request.user
                 # if user.email:
@@ -566,10 +569,13 @@ def training_model(request):
                         }
         print('training_spec_param-------->', training_spec_param)
         try:
+            user = request.user
+            username = user.username
+            print('usernameeeeeeeeeeeeee------------>', username)
             status = async__training_task.delay(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
             num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
             dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
-            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE
+            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE, username
             )
             print('status--------------->', status)
             print('welcome---------->')
