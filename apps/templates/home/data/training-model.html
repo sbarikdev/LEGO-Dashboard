@@ -166,21 +166,21 @@
           </select><br>
         </div>
         <div class="tab">data_obj parameter: <br><hr>
-          <p><input type="number" placeholder="window_len" oninput="this.className = ''" id="window_len" name="window_len" step=any required></p>
-          <p><input type="number" placeholder="fh" oninput="this.className = ''" id="fh" name="fh" step=any required></p>
-          <p><input type="number" placeholder="batch" oninput="this.className = ''" id="batch" name="batch" step=any required></p>
-          <p><input type="number" placeholder="min_nz" oninput="this.className = ''" id="min_nz" name="min_nz" step=any required></p>
-          <p><input type="number" placeholder="PARALLEL_DATA_JOBS" oninput="this.className = ''" id="PARALLEL_DATA_JOBS" name="PARALLEL_DATA_JOBS" step=any required></p>
-          <p><input type="number" placeholder="PARALLEL_DATA_JOBS_BATCHSIZE" oninput="this.className = ''" id="PARALLEL_DATA_JOBS_BATCHSIZE" name="PARALLEL_DATA_JOBS_BATCHSIZE" step=any required></p>
+          <p><input type="number" placeholder="window_len: 26" oninput="this.className = ''" id="window_len" name="window_len" step=any required></p>
+          <p><input type="number" placeholder="fh: 13" oninput="this.className = ''" id="fh" name="fh" step=any required></p>
+          <p><input type="number" placeholder="batch: 16" oninput="this.className = ''" id="batch" name="batch" step=any required></p>
+          <p><input type="number" placeholder="min_nz: 0" oninput="this.className = ''" id="min_nz" name="min_nz" step=any required></p>
+          <p><input type="number" placeholder="PARALLEL_DATA_JOBS: 2" oninput="this.className = ''" id="PARALLEL_DATA_JOBS" name="PARALLEL_DATA_JOBS" step=any required></p>
+          <p><input type="number" placeholder="PARALLEL_DATA_JOBS_BATCHSIZE: 128" oninput="this.className = ''" id="PARALLEL_DATA_JOBS_BATCHSIZE" name="PARALLEL_DATA_JOBS_BATCHSIZE" step=any required></p>
         </div>
 
         <div class="tab">build model:<br><hr>
-          <p><input type="number" placeholder="num_layers" oninput="this.className = ''" name="num_layers" id="num_layers" step=any min="0" max="1" required></p>
-          <p><input type="number" placeholder="num_heads" oninput="this.className = ''" name="num_heads" id="num_heads"></p>
-          <p><input type="text" placeholder="kernel_sizes" name="kernel_sizes" id="kernel_sizes"></p>
-          <p><input type="number" placeholder="d_model" oninput="this.className = ''" name="d_model" id="d_model"></p>
-          <p><input type="number" placeholder="forecast_horizon" oninput="this.className = ''" name="forecast_horizon" id="forecast_horizon"></p>
-          <p><input type="number" placeholder="max_inp_len" oninput="this.className = ''" name="max_inp_len" id="max_inp_len"></p>
+          <p><input type="number" placeholder="num_layers: 1" oninput="this.className = ''" name="num_layers" id="num_layers" step=any min="0" max="1" required></p>
+          <p><input type="number" placeholder="num_heads: 1" oninput="this.className = ''" name="num_heads" id="num_heads"></p>
+          <p><input type="text" placeholder="kernel_sizes: 1,2 (comma separated)" name="kernel_sizes" id="kernel_sizes"></p>
+          <p><input type="number" placeholder="d_model: 16" oninput="this.className = ''" name="d_model" id="d_model"></p>
+          <p><input type="number" placeholder="forecast_horizon: 13" oninput="this.className = ''" name="forecast_horizon" id="forecast_horizon"></p>
+          <p><input type="number" placeholder="max_inp_len: 13" oninput="this.className = ''" name="max_inp_len" id="max_inp_len"></p>
           <label for="peas">loss_type:</label>
             <select name="loss_type" id="loss_type" required>
               <option value="Point">Point</option>
@@ -189,9 +189,9 @@
               <option value="Poisson">Poisson</option>
               <option value="Normal">Normal</option>
             </select><br><br>
-          <p><input type="number" placeholder="num_quantiles" oninput="this.className = ''" name="num_quantiles" id="num_quantiles"></p>
-          <p><input type="number" placeholder="decoder_lags" oninput="this.className = ''" name="decoder_lags" id="decoder_lags"></p>
-          <p><input type="number" placeholder="dropout_rate" oninput="this.className = ''" name="dropout_rate" id="dropout_rate" step=any min="0" max="1"></p>
+          <p><input type="number" placeholder="num_quantiles: 1" oninput="this.className = ''" name="num_quantiles" id="num_quantiles"></p>
+          <p><input type="number" placeholder="decoder_lags: 1" oninput="this.className = ''" name="decoder_lags" id="decoder_lags"></p>
+          <p><input type="number" placeholder="dropout_rate: 0.1(float)" oninput="this.className = ''" name="dropout_rate" id="dropout_rate" step=any min="0" max="1"></p>
         </div>
 
         <div class="tab">Training specific parameters:<br><hr>
@@ -201,12 +201,12 @@
               <option value="MSE">MSE</option>
               <option value="MAE">MAE</option>
             </select><br><br>
-          <p><input type="number" placeholder="learning_rate" oninput="this.className = ''" name="learning_rate" id="learning_rate" min="0" max="1"></p>
-          <p><input type="number" placeholder="max_epochs" oninput="this.className = ''" name="max_epochs" id="max_epochs"></p>
-          <p><input type="number" placeholder="min_epochs" oninput="this.className = ''" name="min_epochs" id="min_epochs"></p>
-          <p><input type="number" placeholder="train_steps_per_epoch" oninput="this.className = ''" name="train_steps_per_epoch" id="train_steps_per_epoch"></p>
-          <p><input type="number" placeholder="test_steps_per_epoch" oninput="this.className = ''" name="test_steps_per_epoch" id="test_steps_per_epoch"></p>
-          <p><input type="number" placeholder="patience" oninput="this.className = ''" name="patience" id="patience"></p>
+          <p><input type="number" placeholder="learning_rate: 0.00003 ( float)" oninput="this.className = ''" name="learning_rate" id="learning_rate" min="0" max="1"></p>
+          <p><input type="number" placeholder="max_epochs: 1" oninput="this.className = ''" name="max_epochs" id="max_epochs"></p>
+          <p><input type="number" placeholder="min_epochs: 1" oninput="this.className = ''" name="min_epochs" id="min_epochs"></p>
+          <p><input type="number" placeholder="train_steps_per_epoch: 10" oninput="this.className = ''" name="train_steps_per_epoch" id="train_steps_per_epoch"></p>
+          <p><input type="number" placeholder="test_steps_per_epoch: 5" oninput="this.className = ''" name="test_steps_per_epoch" id="test_steps_per_epoch"></p>
+          <p><input type="number" placeholder="patience: 10" oninput="this.className = ''" name="patience" id="patience"></p>
         </div>
         <div style="overflow:auto;">
           <div style="float:right;">

@@ -1,3 +1,5 @@
+
+
 from __future__ import absolute_import,unicode_literals
 from celery import shared_task
 from time import sleep
@@ -11,14 +13,14 @@ import uuid
 def async_task(amz_columns_dict, download_path, file_name):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
-    df = df.head(1500)
+    df = df.head(2500)
     print("it's here----->")
     eda_object = eda.eda(col_dict=amz_columns_dict)
     save_path = download_path
-    uuid_no=uuid.uuid4().hex[:5]
-    name_of_file = str(uuid_no) + '_' + file_name
+    # uuid_no=uuid.uuid4().hex[:5]
+    # name_of_file = str(uuid_no) + '_' + file_name
     # file_path = Path(save_path, name_of_file+".html")  
-    file_path = os.path.join(save_path, name_of_file+".html")    
+    file_path = os.path.join(save_path, file_name+".html")    
     eda_object.create_report(data=df, filename=file_path)
     return 'eda task complete'
 
@@ -30,7 +32,7 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
             window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
-    df = df.head(10)
+    df = df.head(1500)
     print("it's here training----->")
     train_till = 202152
     test_till = 202213
@@ -58,7 +60,6 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
 
     # create infer dataset
     infer_dataset, actuals_df = data_obj.infer_dataset(df, history_till=history_till, future_till=future_till)
-    
     # create baseline infer dataset
     baseline_infer_dataset = data_obj.baseline_infer_dataset(df, 
                         history_till=history_till, 
@@ -105,31 +106,22 @@ def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,nu
     except Exception as e:
         print('var_model error is: {}'.format(e))
     try:
-        from azure.datalake.store import core, lib, multithread
-        token = lib.auth()
-        adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
-        path = '/Unilever/satyajit/training_model/'
-        mode = 'wb'
-        with adls_client.open(path, mode) as f:
-            print('adls f--------------->', f)
-        #df = pd.read_csv(f, low_memory=False)
-            # best_var_model = var_model.train(trainset, 
-            #             testset, 
-            #             loss_function = loss_fn,              
-            #             metric=metric,  
-            #             learning_rate=learning_rate,
-            #             max_epochs=max_epochs,
-            #             min_epochs=min_epochs,
-            #             train_steps_per_epoch=train_steps_per_epoch,
-            #             test_steps_per_epoch=test_steps_per_epoch,
-            #             patience=patience,
-            #             weighted_training=False,
-            #             model_prefix='/home/satyajit/Documents',
-            #             logdir='/home/satyajit/Documents')
-            # var_model.model.summary()
-            print('train model build successfully---------------->')
+        best_var_model = var_model.train(trainset, 
+                    testset, 
+                    loss_function = loss_fn,              
+                    metric=metric,  #['MSE','MAE'] -- selection from menu
+                    learning_rate=learning_rate, #0.00003, # explicit entry by user
+                    max_epochs=max_epochs,  # rest all user eneters values
+                    min_epochs=min_epochs,
+                    train_steps_per_epoch=train_steps_per_epoch,
+                    test_steps_per_epoch=test_steps_per_epoch,
+                    patience=patience,
+                    weighted_training=False,
+                    model_prefix='/home/satyajit/Documents',
+                    logdir='/home/satyajit/Documents')
+        print('before train model build successfully---------------->')
+        var_model.model.summary()
+        print('after train model build successfully---------------->')
     except Exception as e:
-        print('train_model error is: {}'.format(e))
+        print('training_model error is: {}'.format(e))
     return 'training task complete'
-
-
