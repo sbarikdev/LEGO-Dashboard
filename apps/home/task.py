@@ -8,7 +8,7 @@ import pandas as pd
 import uuid
 
 @shared_task
-def async_task(amz_columns_dict, download_path, file_name, username):
+def async_task(amz_columns_dict,file_name,username):
     sleep(10)
     df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
     df = df.head(2500)
