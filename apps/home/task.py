@@ -8,13 +8,10 @@ import pandas as pd
 import uuid
 
 @shared_task
-def async_task(amz_columns_dict,file_name,username):
+def async_task(amz_columns_dict,file_name,username,data2):
     sleep(10)
-    df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
-    df = df.head(2500)
-    print("it's here----->")
+    data = pd.DataFrame(data2)
     eda_object = eda.eda(col_dict=amz_columns_dict)
-    # save_path = download_path
     import os
     from core.settings import BASE_DIR
     download_path = os.path.join(BASE_DIR, "projects/eda/%s/" % username)
@@ -29,10 +26,9 @@ def async_task(amz_columns_dict,file_name,username):
     print('download_path------------->', download_path)
     uuid_no=uuid.uuid4().hex[:5]
     name_of_file =  file_name + '_' + str(uuid_no)         
-    save_path = download_path
-    # file_path = Path(save_path, name_of_file+".html")  
+    save_path = download_path 
     file_path = os.path.join(save_path, name_of_file+".html")   
-    eda_object.create_report(data=df, filename=file_path)
+    eda_object.create_report(data=data, filename=file_path)
     return 'eda task complete'
 
 
@@ -40,10 +36,10 @@ def async_task(amz_columns_dict,file_name,username):
 def async__training_task(amz_columns_dict,promo_num_cols,metric,learning_rate,num_layers,
             num_heads,kernel_sizes,d_model,forecast_horizon,loss_type,max_inp_len,num_quantiles,decoder_lags,
             dropout_rate,max_epochs,min_epochs,train_steps_per_epoch,test_steps_per_epoch,patience,
-            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE,username):
+            window_len,fh,batch,min_nz,PARALLEL_DATA_JOBS,PARALLEL_DATA_JOBS_BATCHSIZE,username, data2):
     sleep(10)
-    df = pd.read_csv("/home/satyajit/Desktop/opensource/data/us_amz.csv", low_memory=False)
-    df = df.head(1500)
+    data = pd.DataFrame(data2)
+    df = data.head(1500)
     print("it's here training----->")
     train_till = 202152
     test_till = 202213
