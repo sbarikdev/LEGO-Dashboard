@@ -6,36 +6,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.shortcuts import render
-
-# from databricks_cli.sdk.api_client import ApiClient
-# from databricks_cli.dbfs.api import DbfsApi
-# from databricks_cli.dbfs.dbfs_path import DbfsPath
 import pandas as pd
-# import seaborn as sns
-# import matplotlib.pyplot as plt
-# pd.set_option("display.max_columns", 200)
 import eda, ctfrv2
 import numpy as np
 from pyspark.sql import functions as F
 from IPython.display import set_matplotlib_formats
-# set_matplotlib_formats('retina')
-# pd.set_option("display.max_columns", 100)
-# pd.set_option("display.max_rows", 100)
-
-
-
-# try:
-#     import dask.dataframe as dd
-# except Exception as e:
-#     print(e)
 from azure.datalake.store import core, lib, multithread
 from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import render
-
-# from core.settings import DATABRICKS_HOST,DATABRICKS_TOKEN
-
-# api_client = ApiClient(host = DATABRICKS_HOST, token = DATABRICKS_TOKEN)
 import pandas as pd
 from apps.home.task import async_task, async__training_task
 
@@ -53,9 +32,7 @@ def pages(request):
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
-
         load_template = request.path.split('/')[-1]
-
         if load_template == 'admin':
             return HttpResponseRedirect(reverse('admin:index'))
         context['segment'] = load_template
@@ -84,9 +61,7 @@ def eda_flow(request):
         if os.path.exists(path):
             df = pd.read_csv(path, low_memory=False)
         else:
-            print('tokennnnnnnnnnnnn--------------->', token)
             adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
-            print('adls_client---------------->', adls_client)
             path = '/Unilever/satyajit/us_amz.csv'
             mode = 'rb'
             with adls_client.open(path, mode) as f:
@@ -122,12 +97,10 @@ def eda_flow(request):
                         'sort_col_list': sort_col_list,
                         'wt_col': None,
                         }
-        print('amz_columns_dict-------->', amz_columns_dict)
         import os
         try:   
             user = request.user
             username = user.username
-            print('usernameeeeeeeeeeeeee------------>', username)
             try:
                 status = async_task.delay(amz_columns_dict,file_name,username,data2)
             except Exception as e:
@@ -165,9 +138,7 @@ def training_model(request):
         if os.path.exists(path):
             df = pd.read_csv(path, low_memory=False)
         else:
-            print('tokennnnnnnnnnnnn--------------->', token)
             adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
-            print('adls_client---------------->', adls_client)
             path = '/Unilever/satyajit/us_amz.csv'
             mode = 'rb'
             with adls_client.open(path, mode) as f:
@@ -220,7 +191,6 @@ def training_model(request):
                         'PARALLEL_DATA_JOBS_BATCHSIZE':  PARALLEL_DATA_JOBS_BATCHSIZE,
                         }
         print('data_obj_param-------->', data_obj_param)
-
         #build model
         num_layers =int(request.POST.get('num_layers'))
         num_heads = int(request.POST.get('num_heads'))
