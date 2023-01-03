@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.home',  # Enable the inner home (home)
-    "corsheaders"
+    # "corsheaders"
 ]
 
 MIDDLEWARE = [
@@ -51,38 +51,38 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
-    "corsheaders.middleware.CorsPostCsrfMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
+    # "corsheaders.middleware.CorsPostCsrfMiddleware",
 ]
-CORS_ALLOWED_ORIGINS = [
-    'https://feulegoapp.azurewebsites.net', 
-    'http://feulegoapp.azurewebsites.net',
-    'https://www.feulegoapp.azurewebsites.net',
-    'http://www.feulegoapp.azurewebsites.net',
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://feulegoapp.azurewebsites.net', 
+#     'http://feulegoapp.azurewebsites.net',
+#     'https://www.feulegoapp.azurewebsites.net',
+#     'http://www.feulegoapp.azurewebsites.net',
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+# ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
