@@ -6,6 +6,7 @@ import eda, ctfrv2
 from pathlib import Path
 import pandas as pd
 import uuid
+env = 'LOCAL'
 
 @shared_task
 def async_task(amz_columns_dict,file_name,username,data2):
@@ -14,20 +15,39 @@ def async_task(amz_columns_dict,file_name,username,data2):
     eda_object = eda.eda(col_dict=amz_columns_dict)
     import os
     from core.settings import BASE_DIR
-    download_path = os.path.join(BASE_DIR, "projects/eda/%s/" % username)
-    if not os.path.exists(download_path):
+    if env == 'LOCAL':
+        download_path = os.path.join(BASE_DIR, "projects/eda/%s/" % username)
+    else:
+        pass
+        # download_path = ('/Unilever/satyajit/projects/eda/%s/' % username)
+        # with adls_client.open('/Unilever/satyajit/projects/eda/%s/' % username, 'wb') as o:
+        #     o.write(str.encode(output_str))
+        #     o.close()
+    download_path = str(download_path)
+    if env == 'LOCAL' and not os.path.exists(download_path):
         try:
             os.makedirs(download_path)
             print('folder created----->')
         except FileExistsError:
         # directory already exists
             pass
-    download_path = str(download_path)
-    print('download_path------------->', download_path)
+    elif env == 'REMOTE' and not os.path.exists(download_path):
+        print('remote')
+        pass
     uuid_no=uuid.uuid4().hex[:5]
     name_of_file =  file_name + '_' + str(uuid_no)         
     save_path = download_path 
-    file_path = os.path.join(save_path, name_of_file+".html")   
+    if env == 'LOCAL':
+        file_path = os.path.join(save_path, name_of_file+".html")
+    else:
+        # file_path = os.path.join(save_path, name_of_file+".html")
+        # output_str = data.to_csv(mode = 'w', index=False)
+        # with adls_client.open('/Unilever/satyajit/', 'wb') as o:
+        #     o.write(str.encode(output_str))
+        #     o.close()
+        file_path = None
+        print('adls path create')
+        pass
     eda_object.create_report(data=data, filename=file_path)
     return 'eda task complete'
 

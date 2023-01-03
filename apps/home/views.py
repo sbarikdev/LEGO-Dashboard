@@ -51,27 +51,34 @@ def pages(request):
 
 import json
 token = lib.auth()
+# token = None
 
 @login_required(login_url="/login/")
 def eda_flow(request):
     data = None
-    path = '/home/satyajit/Desktop/opensource/data/us_amzz.csv'
+    path = '/home/satyajit/Desktop/opensource/data/us_amz.csv'
     try:
         import os
         if os.path.exists(path):
             df = pd.read_csv(path, low_memory=False)
+            adls_client = None
         else:
             adls_client = core.AzureDLFileSystem(token, store_name='bnlweda04d80242stgadls')
             path = '/Unilever/satyajit/us_amz.csv'
             mode = 'rb'
             with adls_client.open(path, mode) as f:
                 df = pd.read_csv(f, low_memory=False)
+            # output_str = data.to_csv(mode = 'w', index=False)
+            # with adls_client.open('/home/satyajit/Videos/lego.csv', 'wb') as o:
+            #     o.write(str.encode(output_str))
+            #     o.close()
     except Exception as e:
         print('error is---->', e)
         return render(request,'home/index.html', {'message': 'Error while loading data'})
-    df = df.head(100)
-    data2 = df.to_dict()
-    json_data = df.reset_index()
+    df2 = df.head(100)
+    df3 = df.head(3500)
+    data2 = df3.to_dict()
+    json_data = df2.reset_index()
     data = json.loads(json_data.to_json(orient ='records'))
     context = {'data': data, 'message': 'data loaded successfully.'}
     if request.method == 'POST':
