@@ -355,9 +355,7 @@ def eda_flow(request):
         print('error is---->', e)
         return render(request,'home/index.html', {'message': 'Error while loading data'})
     df2 = df.head(100)
-    df3 = df.head(2000)
-    data2 = df3.to_dict()
     json_data = df2.reset_index()
     data = json.loads(json_data.to_json(orient ='records'))
     context = {'data': data, 'message': 'data loaded successfully.'}
-    return render(request, "home/data/csv-eda-flow.html", context)
+    return render(request, "home/data/eda-flow.html", context)
