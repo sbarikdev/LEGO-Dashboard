@@ -56,7 +56,7 @@ token = lib.auth()
 @login_required(login_url="/login/")
 def eda_flow(request):
     data = None
-    path = '/home/satyajit/Desktop/opensource/data/us_amz.csv'
+    path = '/home/satyajit/Desktop/opensource/data/us_amzz.csv'
     try:
         import os
         if os.path.exists(path):
@@ -342,4 +342,20 @@ def training_model(request):
 #         except Exception as e:
 #             print('error is---->', e)
 #             return render(request,'home/index.html', {'message': 'Error while generating EDA'})
+#     return render(request, "home/data/eda-flow.html", context)
+
+
+# @login_required(login_url="/login/")
+# def eda_flow(request):
+#     data = None
+#     path = '/home/satyajit/Desktop/opensource/data/us_amz.csv'
+#     try:
+#         df = pd.read_csv(path, low_memory=False)
+#     except Exception as e:
+#         print('error is---->', e)
+#         return render(request,'home/index.html', {'message': 'Error while loading data'})
+#     df2 = df.head(100)
+#     json_data = df2.reset_index()
+#     data = json.loads(json_data.to_json(orient ='records'))
+#     context = {'data': data, 'message': 'data loaded successfully.'}
 #     return render(request, "home/data/eda-flow.html", context)
